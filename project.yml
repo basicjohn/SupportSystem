@@ -67,6 +67,8 @@ targets:
         group: SupportSystem/DesignSystem/Theme
       - path: SupportSystem/Utilities/MetadataFetcher.swift
         group: SupportSystem/Utilities
+      - path: SupportSystem/Utilities/URLResolver.swift
+        group: SupportSystem/Utilities
       - path: SupportSystem/DesignSystem/Components/StatusBanner.swift
         group: SupportSystem/DesignSystem/Components
     settings:

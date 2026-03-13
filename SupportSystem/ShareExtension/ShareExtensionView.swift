@@ -773,10 +773,28 @@ struct ShareExtensionView: View {
 
         currentStep = .linkInfo
 
-        // Start async metadata fetch
+        // Start async metadata fetch (with short link resolution)
         isFetchingMetadata = true
         Task {
-            if let metadata = await MetadataFetcher.fetch(from: urlString) {
+            var effectiveURL = urlString
+
+            // Resolve short links first
+            if URLResolver.isKnownShortener(urlString) {
+                let resolved = await URLResolver.resolve(urlString)
+                effectiveURL = resolved
+
+                // Re-detect codes on resolved URL
+                detectedCodes = URLUtilities.detectAffiliateCodes(in: resolved)
+
+                // Update domain if changed
+                if let newDomain = URLUtilities.extractDomain(from: resolved),
+                   newDomain != extractedDomain {
+                    extractedDomain = newDomain
+                    merchantName = MerchantResolver.displayName(for: newDomain)
+                }
+            }
+
+            if let metadata = await MetadataFetcher.fetch(from: effectiveURL) {
                 scrapedTitle = metadata.title
                 scrapedDescription = metadata.description
                 scrapedImageURL = metadata.imageURL

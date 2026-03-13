@@ -18,6 +18,9 @@ final class AddLinkViewModel {
     var savedLink: SavedLink?
     var existingBenefactor: Benefactor?
 
+    // URL resolution
+    var resolvedURL: String?
+
     // Scraped metadata
     var isFetchingMetadata = false
     var scrapedTitle: String?
@@ -75,10 +78,29 @@ final class AddLinkViewModel {
         // Move to link info immediately (metadata loads async)
         currentStep = .linkInfo
 
-        // Start async metadata fetch
+        // Start async metadata fetch (with short link resolution)
         isFetchingMetadata = true
         Task {
-            if let metadata = await MetadataFetcher.fetch(from: url) {
+            var effectiveURL = url
+
+            // Resolve short links first
+            if URLResolver.isKnownShortener(url) {
+                let resolved = await URLResolver.resolve(url)
+                resolvedURL = resolved
+                effectiveURL = resolved
+
+                // Re-detect codes on the resolved URL
+                detectedCodes = URLUtilities.detectAffiliateCodes(in: resolved)
+
+                // Update domain if it changed
+                if let newDomain = URLUtilities.extractDomain(from: resolved),
+                   newDomain != extractedDomain {
+                    extractedDomain = newDomain
+                    extractedDisplayName = MerchantResolver.displayName(for: newDomain)
+                }
+            }
+
+            if let metadata = await MetadataFetcher.fetch(from: effectiveURL) {
                 scrapedTitle = metadata.title
                 scrapedDescription = metadata.description
                 scrapedImageURL = metadata.imageURL
@@ -150,6 +172,7 @@ final class AddLinkViewModel {
         extractedDomain = nil
         extractedDisplayName = nil
         detectedCodes = []
+        resolvedURL = nil
         savedLink = nil
         existingBenefactor = nil
         isFetchingMetadata = false
