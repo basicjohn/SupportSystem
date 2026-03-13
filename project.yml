@@ -1,0 +1,93 @@
+name: SupportSystem
+options:
+  bundleIdPrefix: com.supportsystem
+  deploymentTarget:
+    iOS: "26.0"
+  xcodeVersion: "26.2"
+  generateEmptyDirectories: true
+  groupSortPosition: top
+
+settings:
+  base:
+    SWIFT_VERSION: "6.2"
+    IPHONEOS_DEPLOYMENT_TARGET: "26.0"
+    SWIFT_STRICT_CONCURRENCY: complete
+    DEVELOPMENT_TEAM: HRPP7JVA34
+
+targets:
+  SupportSystem:
+    type: application
+    platform: iOS
+    sources:
+      - path: SupportSystem
+        excludes:
+          - "Resources/Preview Content"
+          - "ShareExtension"
+    resources:
+      - path: SupportSystem/Resources/Assets.xcassets
+    settings:
+      base:
+        INFOPLIST_FILE: SupportSystem/Info.plist
+        PRODUCT_BUNDLE_IDENTIFIER: com.supportsystem.app
+        MARKETING_VERSION: "1.0.0"
+        CURRENT_PROJECT_VERSION: "1"
+        GENERATE_INFOPLIST_FILE: false
+        DEVELOPMENT_ASSET_PATHS: "\"SupportSystem/Resources/Preview Content\""
+        CODE_SIGN_ENTITLEMENTS: SupportSystem/SupportSystem.entitlements
+    dependencies:
+      - target: ShareExtension
+    preBuildScripts: []
+
+  ShareExtension:
+    type: app-extension
+    platform: iOS
+    sources:
+      - path: SupportSystem/ShareExtension
+      - path: SupportSystem/Models/Models.swift
+        group: SupportSystem/Models
+      - path: SupportSystem/Utilities/URLUtilities.swift
+        group: SupportSystem/Utilities
+      - path: SupportSystem/Utilities/CodeDetector.swift
+        group: SupportSystem/Utilities
+      - path: SupportSystem/Utilities/MerchantResolver.swift
+        group: SupportSystem/Utilities
+      - path: SupportSystem/Utilities/SharedContainer.swift
+        group: SupportSystem/Utilities
+      - path: SupportSystem/Extensions/String+URL.swift
+        group: SupportSystem/Extensions
+      - path: SupportSystem/Extensions/Color+App.swift
+        group: SupportSystem/Extensions
+      - path: SupportSystem/Extensions/Decimal+Formatting.swift
+        group: SupportSystem/Extensions
+      - path: SupportSystem/DesignSystem/Theme/AppColors.swift
+        group: SupportSystem/DesignSystem/Theme
+      - path: SupportSystem/DesignSystem/Theme/AppSpacing.swift
+        group: SupportSystem/DesignSystem/Theme
+      - path: SupportSystem/DesignSystem/Theme/AppTypography.swift
+        group: SupportSystem/DesignSystem/Theme
+      - path: SupportSystem/Utilities/MetadataFetcher.swift
+        group: SupportSystem/Utilities
+      - path: SupportSystem/DesignSystem/Components/StatusBanner.swift
+        group: SupportSystem/DesignSystem/Components
+    settings:
+      base:
+        INFOPLIST_FILE: SupportSystem/ShareExtension/Info.plist
+        PRODUCT_BUNDLE_IDENTIFIER: com.supportsystem.app.share-extension
+        MARKETING_VERSION: "1.0.0"
+        CURRENT_PROJECT_VERSION: "1"
+        GENERATE_INFOPLIST_FILE: false
+        CODE_SIGN_ENTITLEMENTS: SupportSystem/ShareExtension/ShareExtension.entitlements
+
+schemes:
+  SupportSystem:
+    build:
+      targets:
+        SupportSystem: all
+        ShareExtension: [building]
+    run:
+      config: Debug
+      executable: SupportSystem
+    profile:
+      config: Release
+    archive:
+      config: Release
