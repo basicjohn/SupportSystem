@@ -271,9 +271,15 @@ struct ShareExtensionView: View {
                     .foregroundStyle(.secondary)
                     .tracking(0.5)
 
-                Text(detectedCode?.code.uppercased() ?? benefactor.code.uppercased())
-                    .font(.system(size: 24, weight: .bold, design: .monospaced))
-                    .foregroundStyle(AppColors.green)
+                HStack(spacing: AppSpacing.sm) {
+                    Text(detectedCode?.code.uppercased() ?? benefactor.code.uppercased())
+                        .font(.system(size: 24, weight: .bold, design: .monospaced))
+                        .foregroundStyle(AppColors.green)
+
+                    if let first = detectedCodes.first {
+                        CodeTypeBadge(type: first.type)
+                    }
+                }
 
                 Text("will receive your support")
                     .font(AppTypography.caption)
@@ -863,9 +869,12 @@ struct ShareExtensionView: View {
             }
         }
 
-        if let detected = detectedCode {
+        if let detected = detectedCodes.first {
             link.benefactorDetected = true
             link.detectedCode = detected.code
+            link.detectedCodeType = detected.type.rawValue
+            link.detectedCodeSource = detected.source.rawValue
+            link.detectedCodeParam = detected.paramName
         }
 
         context.insert(link)

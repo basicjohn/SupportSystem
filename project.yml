@@ -71,6 +71,8 @@ targets:
         group: SupportSystem/Utilities
       - path: SupportSystem/DesignSystem/Components/StatusBanner.swift
         group: SupportSystem/DesignSystem/Components
+      - path: SupportSystem/DesignSystem/Components/CodeTypeBadge.swift
+        group: SupportSystem/DesignSystem/Components
     settings:
       base:
         INFOPLIST_FILE: SupportSystem/ShareExtension/Info.plist

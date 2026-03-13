@@ -152,10 +152,13 @@ final class AddLinkViewModel {
             link.benefactor = benefactor
         }
 
-        // Record detected code
-        if let detected = detectedCode {
+        // Record detected code with metadata
+        if let detected = detectedCodes.first {
             link.benefactorDetected = true
             link.detectedCode = detected.code
+            link.detectedCodeType = detected.type.rawValue
+            link.detectedCodeSource = detected.source.rawValue
+            link.detectedCodeParam = detected.paramName
         }
 
         modelContext.insert(link)
