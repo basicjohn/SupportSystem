@@ -1,0 +1,140 @@
+// =============================================================================
+// SUPPORT SYSTEM - ON-DEVICE DATABASE (iOS)
+// =============================================================================
+// SwiftData schema for local storage (iOS 17+)
+// Data stays on device - user owns their data
+// Export/Import via JSON for user-controlled backup
+// =============================================================================
+
+Project SupportSystemLocal {
+  database_type: 'SQLite'
+  Note: '''
+    SwiftData persistence (iOS 17+)
+    - All data stored locally on device
+    - No cloud sync - user owns their data
+    - JSON export/import for backup
+  '''
+}
+
+// -----------------------------------------------------------------------------
+// SAVED LINKS
+// Products/URLs the user has saved for later
+// SwiftData Model: SavedLink
+// -----------------------------------------------------------------------------
+Table saved_links {
+  id uuid [pk, note: 'UUID - auto-generated']
+  url text [not null, note: 'Full product URL']
+  url_hash varchar [not null, unique, note: 'SHA256 for deduplication']
+
+  // Merchant (extracted from URL)
+  merchant_domain varchar [not null, note: 'e.g., "amazon.com"']
+  merchant_display_name varchar [note: 'e.g., "Amazon"']
+
+  // Product metadata (async fetched)
+  title varchar [note: 'Product title']
+  subtitle varchar [note: 'Product tagline']
+  product_description text [note: 'Full description']
+  image_url text [note: 'Product image']
+  price decimal [note: 'Price at save time']
+  price_currency varchar [default: 'USD']
+  category varchar [note: 'e.g., "Electronics"']
+
+  // Commission (cached from server)
+  commission_rate decimal [note: 'Cached rate for Est. Support calc']
+
+  // Benefactor assignment
+  benefactor_id uuid [ref: > benefactors.id]
+  benefactor_detected boolean [default: false]
+  detected_code varchar [note: 'Code found in URL']
+
+  // Status
+  status varchar [default: 'active', note: 'active | archived | purchased']
+  is_price_alert_enabled boolean [default: false]
+  target_price decimal
+
+  // Timestamps
+  created_at timestamp [not null]
+  updated_at timestamp [not null]
+  viewed_at timestamp
+  archived_at timestamp
+  purchased_at timestamp
+
+  indexes {
+    merchant_domain
+    status
+    created_at
+    (merchant_domain, status)
+  }
+}
+
+// -----------------------------------------------------------------------------
+// BENEFACTORS
+// Creator codes assigned to merchants
+// SwiftData Model: Benefactor
+// -----------------------------------------------------------------------------
+Table benefactors {
+  id uuid [pk, note: 'UUID - auto-generated']
+
+  // Merchant
+  merchant_domain varchar [not null]
+  merchant_display_name varchar
+
+  // Creator
+  creator_name varchar [not null, note: 'e.g., "MKBHD"']
+  creator_avatar_url text
+
+  // Code
+  code varchar [not null, note: 'e.g., "TECH20"']
+  code_type varchar [default: 'affiliate', note: 'affiliate | referral | coupon | creator_code']
+
+  // Notes
+  notes text
+
+  // Priority & Status
+  priority integer [default: 1, note: '1 = primary']
+  is_active boolean [default: true]
+  is_user_defined boolean [default: true, note: 'false = SupportSystem default']
+  source varchar [default: 'manual', note: 'manual | detected | imported | default_fallback']
+
+  // Timestamps
+  created_at timestamp [not null]
+  updated_at timestamp [not null]
+  last_used_at timestamp
+
+  indexes {
+    merchant_domain
+    (merchant_domain, priority)
+    is_user_defined
+  }
+}
+
+// -----------------------------------------------------------------------------
+// APP SETTINGS
+// Key-value store for preferences
+// SwiftData Model: AppSetting
+// -----------------------------------------------------------------------------
+Table app_settings {
+  key varchar [pk, note: 'Setting identifier']
+  value text [not null, note: 'JSON-encoded value']
+  updated_at timestamp
+
+  Note: '''
+    Keys: theme, onboarding_completed, use_default_benefactor,
+    device_id, last_export_at, last_import_at, app_version
+  '''
+}
+
+// -----------------------------------------------------------------------------
+// ONBOARDING PROGRESS
+// Tracks 3-step onboarding flow
+// SwiftData Model: OnboardingProgress
+// -----------------------------------------------------------------------------
+Table onboarding_progress {
+  id integer [pk, default: 1, note: 'Single row']
+  current_step integer [default: 0, note: '0-4']
+  step1_completed boolean [default: false]
+  step2_completed boolean [default: false]
+  step3_completed boolean [default: false]
+  completed_at timestamp
+  skipped boolean [default: false]
+}

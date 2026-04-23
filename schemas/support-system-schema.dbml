@@ -1,0 +1,408 @@
+// =============================================================================
+// SUPPORT SYSTEM - COMBINED DATABASE SCHEMA (DBML)
+// =============================================================================
+// Two-database architecture:
+// 1. ON-DEVICE DATABASE: User personal data (links, benefactors, settings)
+// 2. SERVER DATABASE: Shared merchant data and analytics
+// =============================================================================
+
+
+// =============================================================================
+// ON-DEVICE DATABASE (SQLite / Core Data)
+// User personal data stored locally on their device
+// =============================================================================
+
+// -----------------------------------------------------------------------------
+// SAVED LINKS
+// Products/URLs the user has saved for later
+// -----------------------------------------------------------------------------
+Table saved_links {
+  id varchar [pk, note: 'UUID - Primary key']
+  url text [not null, note: 'Full product URL']
+  url_hash varchar [not null, unique, note: 'SHA256 hash for deduplication']
+
+  // Merchant reference (domain extracted from URL)
+  merchant_domain varchar [not null, note: 'Extracted domain e.g., "amazon.com"']
+  merchant_display_name varchar [note: 'Cached display name e.g., "Amazon"']
+
+  // Product metadata (fetched asynchronously)
+  title varchar [note: 'Product title']
+  subtitle varchar [note: 'Product tagline']
+  description text [note: 'Full product description']
+  image_url text [note: 'Product image URL']
+  price decimal [note: 'Product price at time of save']
+  price_currency varchar [default: 'USD', note: 'Currency code']
+  category varchar [note: 'Product category e.g., "Electronics"']
+
+  // Benefactor assignment
+  benefactor_id varchar [ref: > benefactors.id]
+  benefactor_detected boolean [default: false, note: 'Was a code detected in the URL?']
+  detected_code varchar [note: 'Code found in URL if any']
+
+  // Status tracking
+  status link_status [default: 'active', note: 'Current state of the link']
+  is_price_alert_enabled boolean [default: false]
+  target_price decimal [note: 'Price threshold for alert']
+
+  // Timestamps
+  created_at timestamp [not null, default: `now()`]
+  updated_at timestamp [not null, default: `now()`]
+  viewed_at timestamp
+  archived_at timestamp
+  purchased_at timestamp
+
+  indexes {
+    merchant_domain
+    status
+    created_at
+    (merchant_domain, status)
+  }
+
+  Note: 'User-saved product links, grouped by merchant'
+}
+
+Enum link_status {
+  active
+  archived
+  purchased
+}
+
+// -----------------------------------------------------------------------------
+// BENEFACTORS
+// Creator codes the user has assigned to merchants
+// -----------------------------------------------------------------------------
+Table benefactors {
+  id varchar [pk, note: 'UUID - Primary key']
+
+  // Merchant this benefactor applies to
+  merchant_domain varchar [not null, note: 'Store domain e.g., "amazon.com"']
+  merchant_display_name varchar [note: 'Cached display name']
+
+  // Creator info
+  creator_name varchar [not null, note: 'Display name e.g., "MKBHD"']
+  creator_avatar_url text [note: 'Optional avatar/logo URL']
+
+  // The code
+  code varchar [not null, note: 'The affiliate/referral code']
+  code_type code_type [default: 'affiliate', note: 'Type of code']
+
+  // User notes
+  notes text [note: 'User notes e.g., "20% off first order"']
+
+  // Priority (for multiple codes per merchant)
+  priority integer [default: 1, note: '1 = primary, 2+ = fallbacks']
+  is_active boolean [default: true]
+
+  // Source tracking
+  is_user_defined boolean [default: true, note: 'false = using SupportSystem default']
+  source benefactor_source [default: 'manual']
+
+  // Timestamps
+  created_at timestamp [not null, default: `now()`]
+  updated_at timestamp [not null, default: `now()`]
+  last_used_at timestamp
+
+  indexes {
+    merchant_domain
+    (merchant_domain, priority)
+    is_active
+  }
+
+  Note: 'User-defined benefactor codes per merchant'
+}
+
+Enum code_type {
+  affiliate
+  referral
+  coupon
+  creator_code
+}
+
+Enum benefactor_source {
+  manual
+  detected
+  imported
+  default_fallback
+}
+
+// -----------------------------------------------------------------------------
+// USER SETTINGS
+// App preferences and configuration
+// -----------------------------------------------------------------------------
+Table user_settings {
+  key varchar [pk, note: 'Setting identifier']
+  value text [not null, note: 'Setting value (JSON for complex values)']
+  updated_at timestamp [default: `now()`]
+
+  Note: 'Key-value store for user preferences'
+}
+
+// -----------------------------------------------------------------------------
+// SYNC METADATA
+// Track what has been synced to server (future use)
+// -----------------------------------------------------------------------------
+Table sync_metadata {
+  entity_type varchar [pk, note: 'Table name']
+  last_synced_at timestamp
+  pending_changes integer [default: 0]
+}
+
+
+// =============================================================================
+// SERVER DATABASE (PostgreSQL / Supabase)
+// Shared data and analytics stored on the server
+// =============================================================================
+
+// -----------------------------------------------------------------------------
+// MERCHANTS
+// Master list of supported stores
+// -----------------------------------------------------------------------------
+Table merchants {
+  id varchar [pk, note: 'UUID - Primary key']
+  domain varchar [not null, unique, note: 'Primary domain e.g., "amazon.com"']
+
+  // Display info
+  display_name varchar [not null, note: 'Human-readable name']
+  logo_url text [note: 'Store logo/favicon URL']
+  category varchar [note: 'Store category']
+
+  // Domain variants
+  alternate_domains text [note: 'JSON array of other domains']
+
+  // Code application metadata (for future browser extension)
+  affiliate_network affiliate_network
+  code_pattern text [note: 'JSON: How to apply codes at checkout']
+
+  // Status
+  is_active boolean [default: true]
+  is_verified boolean [default: false]
+
+  // Stats (computed)
+  total_links_saved integer [default: 0]
+  total_purchases integer [default: 0]
+
+  // Timestamps
+  created_at timestamp [not null, default: `now()`]
+  updated_at timestamp [not null, default: `now()`]
+
+  indexes {
+    domain
+    is_active
+    category
+  }
+
+  Note: 'Master merchant/store database'
+}
+
+Enum affiliate_network {
+  amazon_associates
+  shareasale
+  cj_affiliate
+  rakuten
+  impact
+  partnerize
+  awin
+  custom
+  unknown
+}
+
+// -----------------------------------------------------------------------------
+// MERCHANT ANALYTICS
+// Aggregated stats per merchant (anonymized)
+// -----------------------------------------------------------------------------
+Table merchant_analytics {
+  id varchar [pk, note: 'UUID - Primary key']
+  merchant_id varchar [not null, ref: > merchants.id]
+
+  // Time period
+  period_type period_type [not null]
+  period_start date [not null]
+  period_end date [not null]
+
+  // Link counts
+  links_saved integer [default: 0]
+  links_archived integer [default: 0]
+  links_purchased integer [default: 0]
+
+  // Benefactor usage
+  purchases_with_benefactor integer [default: 0]
+  purchases_with_default integer [default: 0]
+  purchases_no_code integer [default: 0]
+
+  // Unique users (approximate)
+  unique_users_approx integer [default: 0]
+
+  // Timestamps
+  created_at timestamp [not null, default: `now()`]
+  updated_at timestamp [not null, default: `now()`]
+
+  indexes {
+    merchant_id
+    period_type
+    period_start
+    (merchant_id, period_type, period_start) [unique]
+  }
+
+  Note: 'Aggregated analytics per merchant per time period'
+}
+
+Enum period_type {
+  daily
+  weekly
+  monthly
+  all_time
+}
+
+// -----------------------------------------------------------------------------
+// DEFAULT BENEFACTORS
+// SupportSystem fallback codes for merchants without user assignment
+// -----------------------------------------------------------------------------
+Table default_benefactors {
+  id varchar [pk, note: 'UUID - Primary key']
+  merchant_id varchar [not null, ref: > merchants.id]
+
+  // The code
+  code varchar [not null, note: 'SupportSystem affiliate code']
+  code_type code_type [default: 'affiliate']
+
+  // Display
+  label varchar [default: 'SupportSystem']
+
+  // Status
+  is_active boolean [default: true]
+
+  // Timestamps
+  created_at timestamp [not null, default: `now()`]
+  updated_at timestamp [not null, default: `now()`]
+
+  indexes {
+    merchant_id
+    is_active
+  }
+
+  Note: 'Fallback codes when user has no benefactor assigned'
+}
+
+// -----------------------------------------------------------------------------
+// POPULAR CREATORS
+// Known creators and their codes (for suggestions)
+// -----------------------------------------------------------------------------
+Table popular_creators {
+  id varchar [pk, note: 'UUID - Primary key']
+
+  // Creator info
+  name varchar [not null, note: 'Display name e.g., "MKBHD"']
+  slug varchar [unique, note: 'URL-friendly identifier']
+  avatar_url text
+
+  // Platform presence
+  platforms text [note: 'JSON: YouTube, Twitter, etc. handles']
+
+  // Verification (future V3)
+  is_verified boolean [default: false]
+  verified_at timestamp
+
+  // Stats
+  times_selected integer [default: 0]
+
+  // Timestamps
+  created_at timestamp [not null, default: `now()`]
+  updated_at timestamp [not null, default: `now()`]
+
+  indexes {
+    name
+    slug
+    times_selected
+  }
+
+  Note: 'Directory of known creators for autocomplete/suggestions'
+}
+
+// -----------------------------------------------------------------------------
+// CREATOR CODES
+// Known codes for popular creators
+// -----------------------------------------------------------------------------
+Table creator_codes {
+  id varchar [pk, note: 'UUID - Primary key']
+  creator_id varchar [not null, ref: > popular_creators.id]
+  merchant_id varchar [not null, ref: > merchants.id]
+
+  // The code
+  code varchar [not null]
+  code_type code_type [default: 'affiliate']
+
+  // Verification
+  is_verified boolean [default: false]
+  last_verified_at timestamp
+  source varchar
+  source_url text
+
+  // Stats
+  use_count integer [default: 0]
+  success_count integer [default: 0]
+  report_count integer [default: 0]
+
+  // Status
+  is_active boolean [default: true]
+  expires_at timestamp
+
+  // Timestamps
+  created_at timestamp [not null, default: `now()`]
+  updated_at timestamp [not null, default: `now()`]
+
+  indexes {
+    creator_id
+    merchant_id
+    (creator_id, merchant_id) [unique]
+    is_active
+  }
+
+  Note: 'Known creator codes by merchant'
+}
+
+// -----------------------------------------------------------------------------
+// ANONYMOUS EVENTS
+// Privacy-preserving analytics events
+// -----------------------------------------------------------------------------
+Table analytics_events {
+  id varchar [pk, note: 'UUID - Primary key']
+
+  // Event info
+  event_type event_type [not null]
+  event_data text [note: 'JSON: Additional event context']
+
+  // Attribution (anonymized)
+  device_hash varchar [note: 'Hashed device ID']
+  session_id varchar
+
+  // Context
+  merchant_id varchar [ref: > merchants.id]
+  app_version varchar
+  platform varchar
+
+  // Timestamp
+  created_at timestamp [not null, default: `now()`]
+
+  indexes {
+    event_type
+    created_at
+    merchant_id
+    (event_type, created_at)
+  }
+
+  Note: 'Anonymous event tracking for product analytics'
+}
+
+Enum event_type {
+  link_saved
+  link_opened
+  link_archived
+  link_purchased
+  benefactor_assigned
+  benefactor_used
+  code_copied
+  onboarding_started
+  onboarding_completed
+  app_opened
+  share_extension_used
+}

@@ -174,7 +174,6 @@ enum CodeDetector {
         "coupon_code": .coupon,
         "discount_code": .coupon,
         "promocode": .coupon,
-        "promocode": .coupon,
     ]
 
     // MARK: - Low Confidence: Fuzzy Suffix Matching

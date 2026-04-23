@@ -113,7 +113,7 @@ struct BenefactorDetectionStepView: View {
 
                 // Save button
                 Button {
-                    viewModel.saveLink(modelContext: modelContext)
+                    Task { await viewModel.saveLink(modelContext: modelContext) }
                 } label: {
                     Text(hasDetectedCode ? "Save & Support This Benefactor" : "Save Link")
                         .font(AppTypography.buttonLabel)

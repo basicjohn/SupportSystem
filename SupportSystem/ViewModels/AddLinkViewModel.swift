@@ -124,7 +124,7 @@ final class AddLinkViewModel {
         currentStep = .benefactorDetection
     }
 
-    func saveLink(modelContext: ModelContext) {
+    func saveLink(modelContext: ModelContext) async {
         let url = urlText.withHTTPS
         guard let domain = extractedDomain,
               let urlHash = URLUtilities.hashURL(url) else {
@@ -140,7 +140,13 @@ final class AddLinkViewModel {
 
         // Populate scraped metadata
         link.title = scrapedTitle
-        link.subtitle = scrapedSubtitle
+        link.subtitle = await TaglineGenerator.generate(
+            title: scrapedTitle,
+            category: scrapedCategory,
+            price: scrapedPrice,
+            merchantDomain: domain,
+            merchantName: extractedDisplayName
+        )
         link.productDescription = scrapedDescription
         link.imageURL = scrapedImageURL
         link.price = scrapedPrice

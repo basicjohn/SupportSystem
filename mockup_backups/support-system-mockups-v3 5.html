@@ -1101,29 +1101,35 @@
 
         /* iOS 26 Buttons - Liquid Glass */
         .btn-primary {
-            background: #323232;
+            background: var(--ios-blue);
             color: #fff;
             border: none;
-            padding: 12px 20px;
-            border-radius: 6px;
-            font-size: 12px;
+            padding: 16px 24px;
+            border-radius: var(--radius-md);
+            font-size: 17px;
             font-weight: 600;
             width: 100%;
             cursor: pointer;
+            box-shadow:
+                0 4px 12px rgba(0, 122, 255, 0.3),
+                inset 0 1px 1px rgba(255,255,255,0.2);
             transition: all 0.2s ease;
         }
 
         .btn-primary:hover {
-            background: #1a1a1a;
+            transform: scale(1.02);
+            box-shadow:
+                0 6px 16px rgba(0, 122, 255, 0.4),
+                inset 0 1px 1px rgba(255,255,255,0.2);
         }
 
         .btn-secondary {
             background: transparent;
-            color: #666;
+            color: var(--ios-blue);
             border: none;
-            padding: 10px 20px;
-            font-size: 11px;
-            font-weight: 500;
+            padding: 16px 24px;
+            font-size: 17px;
+            font-weight: 600;
             width: 100%;
             cursor: pointer;
         }
@@ -1281,27 +1287,43 @@
             font-weight: 500;
         }
 
-        /* Onboarding - Newspaper Style */
-        .onboarding-icon {
-            width: 60px;
-            height: 60px;
-            background: rgba(0,0,0,0.05);
-            border-radius: 50%;
-            margin: 60px auto 20px;
+        /* iOS 26 Onboarding */
+        .onboarding-image {
+            width: 140px;
+            height: 140px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            border-radius: 35px;
+            margin: 40px auto 30px;
             display: flex;
             align-items: center;
             justify-content: center;
-            font-size: 28px;
+            font-size: 60px;
+            box-shadow:
+                0 12px 40px rgba(102, 126, 234, 0.4),
+                inset 0 2px 2px rgba(255,255,255,0.3);
+            position: relative;
+        }
+
+        .onboarding-image::after {
+            content: '';
+            position: absolute;
+            top: 4px;
+            left: 4px;
+            right: 4px;
+            height: 50%;
+            background: linear-gradient(180deg,
+                rgba(255,255,255,0.25) 0%,
+                transparent 100%);
+            border-radius: 32px 32px 50% 50%;
         }
 
         .onboarding-title {
-            font-size: 14px;
+            font-size: 26px;
             font-weight: 700;
             text-align: center;
-            margin-bottom: 8px;
+            margin-bottom: 12px;
             color: #323232;
-            text-transform: uppercase;
-            letter-spacing: 0.5px;
+            letter-spacing: -0.3px;
         }
 
         .onboarding-title.dark {
@@ -1309,50 +1331,33 @@
         }
 
         .onboarding-desc {
-            font-size: 11px;
-            color: #666;
+            font-size: 16px;
+            color: var(--ios-gray);
             text-align: center;
             line-height: 1.5;
-            padding: 0 20px;
-        }
-
-        .onboarding-content {
-            display: flex;
-            flex-direction: column;
-            height: 100%;
-        }
-
-        .onboarding-body {
-            flex: 1;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-        }
-
-        .onboarding-footer {
-            padding: 16px 20px 20px;
+            margin-bottom: 30px;
+            padding: 0 10px;
         }
 
         .page-dots {
             display: flex;
             justify-content: center;
-            gap: 6px;
-            margin-bottom: 16px;
+            gap: 8px;
+            margin-bottom: 24px;
         }
 
         .dot {
-            width: 6px;
-            height: 6px;
+            width: 8px;
+            height: 8px;
             background: rgba(0,0,0,0.15);
             border-radius: 50%;
             transition: all 0.3s ease;
         }
 
         .dot.active {
-            background: #323232;
-            width: 18px;
-            border-radius: 3px;
+            background: var(--ios-blue);
+            width: 24px;
+            border-radius: 4px;
         }
 
         /* iOS 26 Empty State */
@@ -1753,13 +1758,25 @@
         <div class="nav-tab" onclick="showSection('links')">Links Tab</div>
         <div class="nav-tab" onclick="showSection('benefactors')">Benefactors Tab</div>
         <div class="nav-tab" onclick="showSection('settings')">Settings Tab</div>
-        <div class="nav-tab" onclick="showSection('addlink')">Add Link Flow</div>
+        <div class="nav-tab" onclick="showSection('share')">Share Extension</div>
+        <div class="nav-tab" onclick="showSection('forms')">Forms & Modals</div>
     </div>
 
     <!-- ONBOARDING SECTION -->
     <div class="section active" id="onboarding">
         <h2 class="section-title">Onboarding Flow</h2>
-        <p class="section-desc">3-step introduction explaining the app's purpose and how to get started</p>
+        <p class="section-desc">3-step introduction with iOS 26 Liquid Glass styling</p>
+
+        <div class="changelog">
+            <h4>iOS 26 Liquid Glass Features</h4>
+            <ul>
+                <li>Translucent materials with backdrop blur effects</li>
+                <li>Specular highlights on icons and buttons</li>
+                <li>Dynamic Island replaces notch</li>
+                <li>More pronounced corner radii (squircle)</li>
+                <li>Layered depth with inset shadows and glows</li>
+            </ul>
+        </div>
 
         <div class="mockup-grid">
             <!-- Step 1: Welcome -->
@@ -1772,29 +1789,25 @@
                             <span>9:41</span>
                             <span>100%</span>
                         </div>
-                        <div class="screen-content no-tabs" style="display: flex; flex-direction: column; padding-bottom: 20px;">
-                            <div style="flex: 1; display: flex; flex-direction: column; align-items: center; justify-content: center;">
-                                <div class="onboarding-icon"><i class="fa-solid fa-money-bill-trend-up"></i></div>
-                                <h2 class="onboarding-title">Support Your Favorites</h2>
-                                <p class="onboarding-desc">Every purchase is a chance to support the creators you love. Save links, add benefactors, and give back at no extra cost to you.</p>
+                        <div class="screen-content no-tabs">
+                            <div class="onboarding-image">&#127873;</div>
+                            <h2 class="onboarding-title">Support Your Favorites</h2>
+                            <p class="onboarding-desc">Help your favorite creators earn when you shop online - at no extra cost to you.</p>
+                            <div class="page-dots">
+                                <div class="dot active"></div>
+                                <div class="dot"></div>
+                                <div class="dot"></div>
                             </div>
-                            <div style="padding: 0 20px;">
-                                <div class="page-dots">
-                                    <div class="dot active"></div>
-                                    <div class="dot"></div>
-                                    <div class="dot"></div>
-                                </div>
-                                <button class="btn-primary">Get Started</button>
-                                <button class="btn-secondary">Skip</button>
-                            </div>
+                            <button class="btn-primary">Get Started</button>
+                            <button class="btn-secondary">Skip</button>
                         </div>
                     </div>
                 </div>
             </div>
 
-            <!-- Step 2: Save Links -->
+            <!-- Step 2: How It Works -->
             <div class="mockup-card">
-                <div class="mockup-label">Step 2 - Save Links</div>
+                <div class="mockup-label">Step 2 - How It Works</div>
                 <div class="phone-frame">
                     <div class="phone-screen light">
                         <div class="dynamic-island"></div>
@@ -1802,29 +1815,25 @@
                             <span>9:41</span>
                             <span>100%</span>
                         </div>
-                        <div class="screen-content no-tabs" style="display: flex; flex-direction: column; padding-bottom: 20px;">
-                            <div style="flex: 1; display: flex; flex-direction: column; align-items: center; justify-content: center;">
-                                <div class="onboarding-icon">⛓</div>
-                                <h2 class="onboarding-title">Save Links for Later</h2>
-                                <p class="onboarding-desc">Found something you might want to buy? Save it to Support System from Safari or any app. We'll organize your links by store and keep them ready for when you decide to purchase.</p>
+                        <div class="screen-content no-tabs">
+                            <div class="onboarding-image" style="background: linear-gradient(135deg, #34c759 0%, #30d158 100%);">&#128279;</div>
+                            <h2 class="onboarding-title">Save Your Links</h2>
+                            <p class="onboarding-desc">Share product links from any app. We'll organize them by store and remind you of your benefactor's code.</p>
+                            <div class="page-dots">
+                                <div class="dot"></div>
+                                <div class="dot active"></div>
+                                <div class="dot"></div>
                             </div>
-                            <div style="padding: 0 20px;">
-                                <div class="page-dots">
-                                    <div class="dot"></div>
-                                    <div class="dot active"></div>
-                                    <div class="dot"></div>
-                                </div>
-                                <button class="btn-primary">Continue</button>
-                                <button class="btn-secondary">Skip</button>
-                            </div>
+                            <button class="btn-primary">Continue</button>
+                            <button class="btn-secondary">Skip</button>
                         </div>
                     </div>
                 </div>
             </div>
 
-            <!-- Step 3: Add Benefactors -->
+            <!-- Step 3: Add Codes -->
             <div class="mockup-card">
-                <div class="mockup-label">Step 3 - Add Benefactors</div>
+                <div class="mockup-label">Step 3 - Add Codes</div>
                 <div class="phone-frame">
                     <div class="phone-screen light">
                         <div class="dynamic-island"></div>
@@ -1832,21 +1841,16 @@
                             <span>9:41</span>
                             <span>100%</span>
                         </div>
-                        <div class="screen-content no-tabs" style="display: flex; flex-direction: column; padding-bottom: 20px;">
-                            <div style="flex: 1; display: flex; flex-direction: column; align-items: center; justify-content: center;">
-                                <div class="onboarding-icon"><i class="fa-solid fa-heart"></i></div>
-                                <h2 class="onboarding-title">Add Benefactors</h2>
-                                <p class="onboarding-desc">Your favorite YouTubers, podcasters, and creators share affiliate links. Add their codes here, and when you purchase through your saved links, they earn a commission.</p>
+                        <div class="screen-content no-tabs">
+                            <div class="onboarding-image" style="background: linear-gradient(135deg, #ff6b6b 0%, #feca57 100%);">&#128100;</div>
+                            <h2 class="onboarding-title">Add Benefactor Codes</h2>
+                            <p class="onboarding-desc">Enter affiliate codes from your favorite YouTubers, streamers, and podcasters. One code per store.</p>
+                            <div class="page-dots">
+                                <div class="dot"></div>
+                                <div class="dot"></div>
+                                <div class="dot active"></div>
                             </div>
-                            <div style="padding: 0 20px;">
-                                <div class="page-dots">
-                                    <div class="dot"></div>
-                                    <div class="dot"></div>
-                                    <div class="dot active"></div>
-                                </div>
-                                <button class="btn-primary">Start Saving Links</button>
-                                <button class="btn-secondary" style="visibility: hidden;">Skip</button>
-                            </div>
+                            <button class="btn-primary">Start Using App</button>
                         </div>
                     </div>
                 </div>
@@ -2131,35 +2135,16 @@
                         </div>
                         <div class="screen-content">
                             <!-- Title with Add Button -->
-                            <div class="title-row-with-branch">
+                            <div class="title-row">
                                 <h1 class="screen-title">Support<br>System</h1>
-                                <div class="branch-illustration-full">
-                                    <svg viewBox="0 0 200 50" preserveAspectRatio="none">
-                                        <!-- COMMENTED OUT: trunk and branches
-                                        <path class="branch-path" d="M55,22 Q57,12 75,6"/>
-                                        <path class="branch-path" d="M68,22 Q72,32 88,40"/>
-                                        <path class="branch-path" d="M82,22 Q88,34 108,44"/>
-                                        <path class="branch-path" d="M95,22 Q98,14 115,8"/>
-                                        <path class="branch-path" d="M108,22 Q112,12 130,4"/>
-                                        <path class="branch-path" d="M122,22 Q128,32 145,38"/>
-                                        <path class="branch-path" d="M138,22 Q140,14 155,6"/>
-                                        <path class="branch-main" d="M0,22 L220,22"/>
-                                        -->
-                                        <!-- Line coming out of right side of + button -->
-                                        <path class="branch-main" d="M175,22 L220,22"/>
-                                    </svg>
-                                </div>
-                                <div class="add-btn add-btn-branch">+</div>
+                                <div class="add-btn">+</div>
                             </div>
 
-                            <!-- Empty State Content -->
-                            <div style="display: flex; flex-direction: column; align-items: center; justify-content: center; text-align: center; padding: 40px 20px;">
-                                <div style="width: 50px; height: 50px; background: rgba(0,0,0,0.05); border-radius: 50%; margin-bottom: 16px; display: flex; align-items: center; justify-content: center;">
-                                    <span style="font-size: 24px;">⛓</span>
-                                </div>
-                                <h3 style="font-size: 14px; font-weight: 700; margin-bottom: 6px; color: #323232;">No Links Yet</h3>
-                                <p style="font-size: 10px; color: #888; line-height: 1.4; max-width: 200px; margin-bottom: 20px;">Share a product link from Safari or any shopping app to start supporting your favorite creators.</p>
-                                <button style="padding: 10px 20px; background: #323232; color: #fff; border: none; border-radius: 6px; font-size: 11px; font-weight: 600;">How to Save Links</button>
+                            <div class="empty-state">
+                                <div class="empty-icon">&#128279;</div>
+                                <div class="empty-title">No Links Yet</div>
+                                <div class="empty-desc">Share a product link from Safari, Amazon, or any shopping app to get started.</div>
+                                <button class="btn-primary">How to Share Links</button>
                             </div>
                         </div>
                         <div class="tab-bar">
@@ -2182,76 +2167,9 @@
                 </div>
             </div>
 
-            <!-- Link Detail View (from tapping a link) -->
+            <!-- Long Press Benefactor Modal -->
             <div class="mockup-card">
-                <div class="mockup-label">Link Detail View <span class="recommended">NEW</span></div>
-                <div class="phone-frame">
-                    <div class="phone-screen light">
-                        <div class="dynamic-island"></div>
-                        <div class="status-bar light">
-                            <span>9:41</span>
-                            <span>100%</span>
-                        </div>
-                        <div class="screen-content">
-                            <!-- Header -->
-                            <div style="display: flex; justify-content: space-between; align-items: center; padding: 8px 0 16px; border-bottom: 1px solid rgba(0,0,0,0.08); margin-bottom: 16px;">
-                                <span style="color: #323232; font-size: 14px;">← Back</span>
-                                <span style="font-weight: 700; font-size: 14px; text-transform: uppercase; letter-spacing: 0.5px;">Link Details</span>
-                                <span style="color: #323232; font-size: 18px; font-weight: 700; letter-spacing: 2px;">•••</span>
-                            </div>
-
-                            <!-- Merchant Header -->
-                            <div class="merchant-section-header accent-amazon" style="margin: 0 -16px 0;">
-                                <span>Amazon</span>
-                                <span class="benefactor-icon active"><i class="fa-solid fa-money-bill-trend-up"></i></span>
-                            </div>
-
-                            <!-- Product Info - Link List Style -->
-                            <div style="padding: 12px 0; border-bottom: 1px solid rgba(0,0,0,0.08);">
-                                <div style="display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 4px;">
-                                    <span style="font-size: 11px; font-weight: 700; color: #323232;">Sony WH-1000XM5</span>
-                                    <span style="font-size: 9px; color: #888;">$349.99</span>
-                                </div>
-                                <p style="font-size: 9px; color: #888; font-style: italic; line-height: 1.2;">Silence the world. Premium noise-canceling bliss.</p>
-                            </div>
-
-                            <!-- Meta Description -->
-                            <div style="padding: 12px 0;">
-                                <div style="font-size: 9px; font-weight: 600; color: #555; text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 6px;">Description</div>
-                                <p style="font-size: 10px; color: #555; line-height: 1.4;">Industry-leading noise canceling headphones with Auto NC Optimizer, crystal clear hands-free calling, and up to 30-hour battery life. Features multipoint connection and speak-to-chat technology.</p>
-                            </div>
-
-                            <!-- Benefactor Info -->
-                            <div style="padding: 12px 0; border-top: 1px solid rgba(0,0,0,0.08);">
-                                <div style="font-size: 9px; font-weight: 600; color: #555; text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 6px;">Benefactor</div>
-                                <div style="display: flex; align-items: center; gap: 8px;">
-                                    <span style="color: var(--ios-green);"><i class="fa-solid fa-money-bill-trend-up"></i></span>
-                                    <div>
-                                        <div style="font-size: 11px; font-weight: 700; color: #323232;">MKBHD</div>
-                                        <div style="font-size: 9px; color: #888;">Code: TECH20</div>
-                                    </div>
-                                </div>
-                            </div>
-
-                            <!-- Saved Date -->
-                            <div style="padding: 12px 0;">
-                                <div style="display: flex; justify-content: space-between;">
-                                    <span style="font-size: 10px; color: #888;">Saved</span>
-                                    <span style="font-size: 10px; color: #323232;">Jan 24, 2026</span>
-                                </div>
-                            </div>
-
-                            <!-- Action Buttons -->
-                            <button style="width: 100%; padding: 12px; background: #323232; color: #fff; border: none; border-radius: 6px; font-size: 12px; font-weight: 600; margin-top: 12px;">Shop Now</button>
-                            <button style="width: 100%; padding: 12px; background: transparent; color: #323232; border: 1px solid rgba(0,0,0,0.15); border-radius: 6px; font-size: 12px; font-weight: 600; margin-top: 8px;">Copy Link</button>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Link Detail View - Menu Open -->
-            <div class="mockup-card">
-                <div class="mockup-label">Link Detail - Menu <span class="recommended">NEW</span></div>
+                <div class="mockup-label">Long Press Benefactor Modal <span class="recommended">NEW</span></div>
                 <div class="phone-frame">
                     <div class="phone-screen light">
                         <div class="dynamic-island"></div>
@@ -2260,63 +2178,135 @@
                             <span>100%</span>
                         </div>
                         <div class="screen-content" style="filter: blur(2px);">
-                            <!-- Header -->
-                            <div style="display: flex; justify-content: space-between; align-items: center; padding: 8px 0 16px; border-bottom: 1px solid rgba(0,0,0,0.08); margin-bottom: 16px;">
-                                <span style="color: #323232; font-size: 14px;">← Back</span>
-                                <span style="font-weight: 700; font-size: 14px; text-transform: uppercase; letter-spacing: 0.5px;">Link Details</span>
-                                <span style="color: #323232; font-size: 18px; font-weight: 700; letter-spacing: 2px;">•••</span>
+                            <!-- Title with Add Button -->
+                            <div class="title-row">
+                                <h1 class="screen-title">Support<br>System</h1>
+                                <div class="add-btn">+</div>
                             </div>
 
-                            <!-- Merchant Header -->
-                            <div class="merchant-section-header accent-amazon" style="margin: 0 -16px 0;">
+                            <!-- Amazon Section (has accent color: #FF9900) -->
+                            <div class="merchant-section-header accent-amazon">
                                 <span>Amazon</span>
                                 <span class="benefactor-icon active"><i class="fa-solid fa-money-bill-trend-up"></i></span>
                             </div>
-
-                            <!-- Product Info -->
-                            <div style="padding: 12px 0;">
-                                <div style="display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 4px;">
-                                    <span style="font-size: 11px; font-weight: 700; color: #323232;">Sony WH-1000XM5</span>
-                                    <span style="font-size: 9px; color: #888;">$349.99</span>
+                            <div class="link-list-item">
+                                <div class="link-list-content">
+                                    <div class="link-list-top-row">
+                                        <span class="link-list-title">Sony WH-1000XM5</span>
+                                        <span class="link-list-price">$349.99</span>
+                                    </div>
+                                    <span class="link-list-subtitle">Silence the world. Premium noise-canceling bliss.</span>
+                                </div>
+                                <span class="link-list-chevron">&#8250;</span>
+                            </div>
+                        </div>
+                        <!-- Benefactor Modal Overlay -->
+                        <div class="benefactor-modal-overlay">
+                            <div class="benefactor-modal">
+                                <div class="benefactor-modal-header">
+                                    <h3>Amazon Benefactor</h3>
+                                    <p>Long press to change</p>
+                                </div>
+                                <div class="benefactor-modal-content">
+                                    <div class="benefactor-modal-status">
+                                        <div class="benefactor-modal-status-icon active"><i class="fa-solid fa-money-bill-trend-up"></i></div>
+                                        <div class="benefactor-modal-status-text">
+                                            <div style="font-weight: 600; font-size: 15px; color: #323232;">MKBHD</div>
+                                            <div style="font-size: 13px; color: #888;">Code: TECH20</div>
+                                        </div>
+                                    </div>
+                                    <button class="benefactor-modal-action">Change Benefactor</button>
+                                    <button class="benefactor-modal-action">Use SupportSystem</button>
+                                    <button class="benefactor-modal-action" style="color: #888; border-bottom: none;">Cancel</button>
                                 </div>
                             </div>
                         </div>
+                        <div class="tab-bar">
+                            <div class="tab-bar-pill">
+                                <div class="tab-item active">
+                                    <div class="tab-icon">⛓</div>
+                                    <span>Links</span>
+                                </div>
+                                <div class="tab-item">
+                                    <div class="tab-icon"><i class="fa-solid fa-money-bill-trend-up"></i></div>
+                                    <span>Benefactors</span>
+                                </div>
+                                <div class="tab-item">
+                                    <div class="tab-icon">⚙</div>
+                                    <span>Settings</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
 
-                        <!-- Drawer Overlay -->
-                        <div style="position: absolute; top: 0; left: 0; right: 0; bottom: 0; background: rgba(0,0,0,0.4); display: flex; align-items: flex-end;">
-                            <div style="background: #f8f8f8; border-radius: 12px 12px 0 0; width: 100%; overflow: hidden;">
-                                <!-- Drawer Handle -->
-                                <div style="padding: 8px 0; display: flex; justify-content: center;">
-                                    <div style="width: 36px; height: 4px; background: rgba(0,0,0,0.2); border-radius: 2px;"></div>
+            <!-- Long Press Benefactor Modal - Default State -->
+            <div class="mockup-card">
+                <div class="mockup-label">Modal - Default (No Benefactor)</div>
+                <div class="phone-frame">
+                    <div class="phone-screen light">
+                        <div class="dynamic-island"></div>
+                        <div class="status-bar light">
+                            <span>9:41</span>
+                            <span>100%</span>
+                        </div>
+                        <div class="screen-content" style="filter: blur(2px);">
+                            <!-- Title with Add Button -->
+                            <div class="title-row">
+                                <h1 class="screen-title">Support<br>System</h1>
+                                <div class="add-btn">+</div>
+                            </div>
+
+                            <!-- Nike Section -->
+                            <div class="merchant-section-header">
+                                <span>Nike</span>
+                                <span class="benefactor-icon"><i class="fa-solid fa-money-bill-trend-up"></i></span>
+                            </div>
+                            <div class="link-list-item">
+                                <div class="link-list-content">
+                                    <div class="link-list-top-row">
+                                        <span class="link-list-title">Air Max 90</span>
+                                        <span class="link-list-price">$130.00</span>
+                                    </div>
+                                    <span class="link-list-subtitle">Legendary comfort. Street-ready icon.</span>
                                 </div>
-                                <!-- Menu Options -->
-                                <div style="padding: 12px 20px; border-bottom: 1px solid rgba(0,0,0,0.08); display: flex; align-items: center; gap: 14px;">
-                                    <span style="color: var(--ios-green); font-size: 14px; width: 20px; text-align: center;"><i class="fa-solid fa-check"></i></span>
-                                    <span style="font-size: 13px; color: #323232;">Mark as Purchased</span>
+                                <span class="link-list-chevron">&#8250;</span>
+                            </div>
+                        </div>
+                        <!-- Benefactor Modal Overlay - Default State -->
+                        <div class="benefactor-modal-overlay">
+                            <div class="benefactor-modal">
+                                <div class="benefactor-modal-header">
+                                    <h3>Nike Benefactor</h3>
+                                    <p>Long press to change</p>
                                 </div>
-                                <div style="padding: 12px 20px; border-bottom: 1px solid rgba(0,0,0,0.08); display: flex; align-items: center; gap: 14px;">
-                                    <span style="color: #666; font-size: 14px; width: 20px; text-align: center;"><i class="fa-solid fa-box-archive"></i></span>
-                                    <span style="font-size: 13px; color: #323232;">Archive</span>
+                                <div class="benefactor-modal-content">
+                                    <div class="benefactor-modal-status">
+                                        <div class="benefactor-modal-status-icon default"><i class="fa-solid fa-money-bill-trend-up"></i></div>
+                                        <div class="benefactor-modal-status-text">
+                                            <div style="font-weight: 600; font-size: 15px; color: #888;">SupportSystem</div>
+                                            <div style="font-size: 13px; color: #aaa;">Default benefactor</div>
+                                        </div>
+                                    </div>
+                                    <button class="benefactor-modal-action">Set Benefactor</button>
+                                    <button class="benefactor-modal-action" style="color: #888; border-bottom: none;">Cancel</button>
                                 </div>
-                                <div style="padding: 12px 20px; border-bottom: 1px solid rgba(0,0,0,0.08); display: flex; align-items: center; gap: 14px;">
-                                    <span style="color: #666; font-size: 14px; width: 20px; text-align: center;"><i class="fa-solid fa-share-from-square"></i></span>
-                                    <span style="font-size: 13px; color: #323232;">Share Link</span>
+                            </div>
+                        </div>
+                        <div class="tab-bar">
+                            <div class="tab-bar-pill">
+                                <div class="tab-item active">
+                                    <div class="tab-icon">⛓</div>
+                                    <span>Links</span>
                                 </div>
-                                <div style="padding: 12px 20px; border-bottom: 1px solid rgba(0,0,0,0.08); display: flex; align-items: center; gap: 14px;">
-                                    <span style="color: #666; font-size: 14px; width: 20px; text-align: center;"><i class="fa-solid fa-bell"></i></span>
-                                    <span style="font-size: 13px; color: #323232;">Set Price Alert</span>
+                                <div class="tab-item">
+                                    <div class="tab-icon"><i class="fa-solid fa-money-bill-trend-up"></i></div>
+                                    <span>Benefactors</span>
                                 </div>
-                                <div style="padding: 12px 20px; border-bottom: 1px solid rgba(0,0,0,0.08); display: flex; align-items: center; gap: 14px;">
-                                    <span style="color: #666; font-size: 14px; width: 20px; text-align: center;"><i class="fa-solid fa-user-pen"></i></span>
-                                    <span style="font-size: 13px; color: #323232;">Change Benefactor</span>
-                                </div>
-                                <div style="padding: 12px 20px; border-bottom: 1px solid rgba(0,0,0,0.08); display: flex; align-items: center; gap: 14px;">
-                                    <span style="color: var(--ios-red); font-size: 14px; width: 20px; text-align: center;"><i class="fa-solid fa-trash"></i></span>
-                                    <span style="font-size: 13px; color: var(--ios-red);">Delete</span>
-                                </div>
-                                <!-- Cancel -->
-                                <div style="padding: 14px 20px 24px; display: flex; align-items: center; justify-content: center;">
-                                    <span style="font-size: 13px; color: #888; font-weight: 600;">Cancel</span>
+                                <div class="tab-item">
+                                    <div class="tab-icon">⚙</div>
+                                    <span>Settings</span>
                                 </div>
                             </div>
                         </div>
@@ -2407,12 +2397,12 @@
     <!-- BENEFACTORS TAB SECTION -->
     <div class="section" id="benefactors">
         <h2 class="section-title">Benefactors Tab</h2>
-        <p class="section-desc">Manage benefactor codes - grouped by whether user has assigned a benefactor or using default</p>
+        <p class="section-desc">Manage benefactor codes with iOS 26 Liquid Glass styling</p>
 
         <div class="mockup-grid">
             <!-- Main View -->
             <div class="mockup-card">
-                <div class="mockup-label">Benefactors List</div>
+                <div class="mockup-label">Main View <span class="recommended">iOS 26</span></div>
                 <div class="phone-frame">
                     <div class="phone-screen light">
                         <div class="dynamic-island"></div>
@@ -2421,115 +2411,135 @@
                             <span>100%</span>
                         </div>
                         <div class="screen-content">
-                            <!-- Title with Add Button -->
-                            <div class="title-row">
-                                <h1 class="screen-title">Benefactors</h1>
-                                <div class="add-btn">+</div>
+                            <div class="nav-bar light">
+                                <h1>Benefactors</h1>
                             </div>
 
-                            <!-- Your Benefactors Section -->
-                            <div class="merchant-section-header accent-amazon">
-                                <span>Your Benefactors</span>
-                            </div>
-                            <div class="link-list-item">
-                                <div class="link-list-content">
-                                    <div class="link-list-top-row">
-                                        <span class="link-list-title">Amazon</span>
-                                        <span style="font-size: 9px; color: var(--ios-green);"><i class="fa-solid fa-money-bill-trend-up"></i></span>
-                                    </div>
-                                    <span class="link-list-subtitle">MKBHD · TECH20</span>
-                                </div>
-                                <span class="link-list-chevron">&#8250;</span>
-                            </div>
-                            <div class="link-list-item alt">
-                                <div class="link-list-content">
-                                    <div class="link-list-top-row">
-                                        <span class="link-list-title">Best Buy</span>
-                                        <span style="font-size: 9px; color: var(--ios-green);"><i class="fa-solid fa-money-bill-trend-up"></i></span>
-                                    </div>
-                                    <span class="link-list-subtitle">LinusTech · LINUS15</span>
-                                </div>
-                                <span class="link-list-chevron">&#8250;</span>
-                            </div>
-                            <div class="link-list-item">
-                                <div class="link-list-content">
-                                    <div class="link-list-top-row">
-                                        <span class="link-list-title">B&H Photo</span>
-                                        <span style="font-size: 9px; color: var(--ios-green);"><i class="fa-solid fa-money-bill-trend-up"></i></span>
-                                    </div>
-                                    <span class="link-list-subtitle">MKBHD · PHOTO10</span>
-                                </div>
-                                <span class="link-list-chevron">&#8250;</span>
-                            </div>
-                            <div class="link-list-item alt">
-                                <div class="link-list-content">
-                                    <div class="link-list-top-row">
-                                        <span class="link-list-title">Newegg</span>
-                                        <span style="font-size: 9px; color: var(--ios-green);"><i class="fa-solid fa-money-bill-trend-up"></i></span>
-                                    </div>
-                                    <span class="link-list-subtitle">JayzTwoCents · JAYZ20</span>
-                                </div>
-                                <span class="link-list-chevron">&#8250;</span>
+                            <p style="font-size: 15px; color: var(--ios-gray); margin-bottom: 16px;">Assign creator codes to stores</p>
+
+                            <div class="section-header" style="margin-top: 0;">
+                                <h2>Your Codes (3)</h2>
                             </div>
 
-                            <!-- Using Default Section -->
-                            <div class="merchant-section-header">
-                                <span>Using Default</span>
-                            </div>
-                            <div class="link-list-item">
-                                <div class="link-list-content">
-                                    <div class="link-list-top-row">
-                                        <span class="link-list-title">Nike</span>
-                                        <span style="font-size: 9px; color: #888;"><i class="fa-solid fa-money-bill-trend-up"></i></span>
+                            <div class="glass-card">
+                                <div class="merchant-card">
+                                    <div class="merchant-logo">A</div>
+                                    <div class="merchant-info">
+                                        <div class="merchant-name">amazon.com</div>
+                                        <div class="merchant-meta">5 links saved</div>
+                                        <div class="merchant-benefactor">&#128100; MKBHD &middot; TECH20</div>
                                     </div>
-                                    <span class="link-list-subtitle">SupportSystem (default)</span>
+                                    <span class="merchant-action">Edit</span>
                                 </div>
-                                <span class="link-list-chevron">&#8250;</span>
-                            </div>
-                            <div class="link-list-item alt">
-                                <div class="link-list-content">
-                                    <div class="link-list-top-row">
-                                        <span class="link-list-title">Target</span>
-                                        <span style="font-size: 9px; color: #888;"><i class="fa-solid fa-money-bill-trend-up"></i></span>
-                                    </div>
-                                    <span class="link-list-subtitle">SupportSystem (default)</span>
-                                </div>
-                                <span class="link-list-chevron">&#8250;</span>
                             </div>
 
-                            <!-- Summary Section -->
-                            <div class="summary-section">
-                                <div class="summary-header">Your Support Network</div>
-                                <div class="summary-stats">
-                                    <div class="summary-stat">
-                                        <span class="summary-stat-value">4</span>
-                                        <span class="summary-stat-label">Benefactors</span>
+                            <div class="glass-card">
+                                <div class="merchant-card">
+                                    <div class="merchant-logo" style="background: linear-gradient(135deg, #ff6b6b 0%, #ee5a24 100%);">B</div>
+                                    <div class="merchant-info">
+                                        <div class="merchant-name">bestbuy.com</div>
+                                        <div class="merchant-meta">3 links saved</div>
+                                        <div class="merchant-benefactor">&#128100; LinusTech &middot; LINUS15</div>
                                     </div>
-                                    <div class="summary-stat">
-                                        <span class="summary-stat-value">6</span>
-                                        <span class="summary-stat-label">Stores</span>
+                                    <span class="merchant-action">Edit</span>
+                                </div>
+                            </div>
+
+                            <div class="section-header">
+                                <h2>Using SupportSystem (2)</h2>
+                            </div>
+
+                            <div class="glass-card" style="border-color: var(--ios-blue);">
+                                <div class="merchant-card">
+                                    <div class="merchant-logo" style="background: var(--glass-white); color: var(--ios-blue); box-shadow: none; border: 1px solid var(--glass-border-light);">N</div>
+                                    <div class="merchant-info">
+                                        <div class="merchant-name">nike.com</div>
+                                        <div class="merchant-meta">2 links saved</div>
+                                        <div style="font-size: 14px; color: var(--ios-blue); margin-top: 2px;">&#128279; SupportSystem (default)</div>
                                     </div>
-                                    <div class="summary-stat">
-                                        <span class="summary-stat-value highlight">$24.50</span>
-                                        <span class="summary-stat-label">Est. Support</span>
-                                    </div>
+                                    <span class="merchant-action">+ Add Code</span>
                                 </div>
                             </div>
                         </div>
                         <div class="tab-bar">
-                            <div class="tab-bar-pill">
-                                <div class="tab-item">
-                                    <div class="tab-icon">⛓</div>
-                                    <span>Links</span>
+                            <div class="tab-item">
+                                <div class="tab-icon">⛓</div>
+                                <span>Links</span>
+                            </div>
+                            <div class="tab-item active">
+                                <div class="tab-icon">♡</div>
+                                <span>Benefactors</span>
+                            </div>
+                            <div class="tab-item">
+                                <div class="tab-icon">⚙</div>
+                                <span>Settings</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Dark Mode -->
+            <div class="mockup-card">
+                <div class="mockup-label">Dark Mode</div>
+                <div class="phone-frame">
+                    <div class="phone-screen dark">
+                        <div class="dynamic-island"></div>
+                        <div class="status-bar dark">
+                            <span>9:41</span>
+                            <span>100%</span>
+                        </div>
+                        <div class="screen-content">
+                            <div class="nav-bar dark">
+                                <h1>Benefactors</h1>
+                            </div>
+
+                            <p style="font-size: 15px; color: var(--ios-gray); margin-bottom: 16px;">Assign creator codes to stores</p>
+
+                            <div class="section-header" style="margin-top: 0;">
+                                <h2>Your Codes (2)</h2>
+                            </div>
+
+                            <div class="glass-card dark">
+                                <div class="merchant-card">
+                                    <div class="merchant-logo">A</div>
+                                    <div class="merchant-info">
+                                        <div class="merchant-name dark">amazon.com</div>
+                                        <div class="merchant-meta">5 links saved</div>
+                                        <div class="merchant-benefactor">&#128100; MKBHD &middot; TECH20</div>
+                                    </div>
+                                    <span class="merchant-action">Edit</span>
                                 </div>
-                                <div class="tab-item active">
-                                    <div class="tab-icon"><i class="fa-solid fa-money-bill-trend-up"></i></div>
-                                    <span>Benefactors</span>
+                            </div>
+
+                            <div class="section-header">
+                                <h2>Using SupportSystem (1)</h2>
+                            </div>
+
+                            <div class="glass-card dark" style="border-color: var(--ios-blue);">
+                                <div class="merchant-card">
+                                    <div class="merchant-logo" style="background: var(--glass-dark); color: var(--ios-blue); box-shadow: none;">N</div>
+                                    <div class="merchant-info">
+                                        <div class="merchant-name dark">nike.com</div>
+                                        <div class="merchant-meta">2 links saved</div>
+                                        <div style="font-size: 14px; color: var(--ios-blue); margin-top: 2px;">&#128279; SupportSystem (default)</div>
+                                    </div>
+                                    <span class="merchant-action">+ Add</span>
                                 </div>
-                                <div class="tab-item">
-                                    <div class="tab-icon">⚙</div>
-                                    <span>Settings</span>
-                                </div>
+                            </div>
+                        </div>
+                        <div class="tab-bar dark">
+                            <div class="tab-item">
+                                <div class="tab-icon">⛓</div>
+                                <span>Links</span>
+                            </div>
+                            <div class="tab-item active">
+                                <div class="tab-icon">♡</div>
+                                <span>Benefactors</span>
+                            </div>
+                            <div class="tab-item">
+                                <div class="tab-icon">⚙</div>
+                                <span>Settings</span>
                             </div>
                         </div>
                     </div>
@@ -2547,36 +2557,29 @@
                             <span>100%</span>
                         </div>
                         <div class="screen-content">
-                            <!-- Title -->
-                            <div class="title-row">
-                                <h1 class="screen-title">Benefactors</h1>
-                                <div class="add-btn">+</div>
+                            <div class="nav-bar light">
+                                <h1>Benefactors</h1>
                             </div>
 
-                            <!-- Empty State Content -->
-                            <div style="display: flex; flex-direction: column; align-items: center; justify-content: center; text-align: center; padding: 40px 20px;">
-                                <div style="width: 50px; height: 50px; background: rgba(0,0,0,0.05); border-radius: 50%; margin-bottom: 16px; display: flex; align-items: center; justify-content: center;">
-                                    <span style="font-size: 24px;"><i class="fa-solid fa-money-bill-trend-up"></i></span>
-                                </div>
-                                <h3 style="font-size: 14px; font-weight: 700; margin-bottom: 6px; color: #323232;">No Benefactors Yet</h3>
-                                <p style="font-size: 10px; color: #888; line-height: 1.4; max-width: 200px; margin-bottom: 20px;">Add your favorite creators' affiliate codes to support them when you shop. Until then, SupportSystem is the default benefactor.</p>
-                                <button style="padding: 10px 20px; background: #323232; color: #fff; border: none; border-radius: 6px; font-size: 11px; font-weight: 600;">Add a Benefactor</button>
+                            <div class="empty-state">
+                                <div class="empty-icon">&#128100;</div>
+                                <div class="empty-title">No Stores Yet</div>
+                                <div class="empty-desc">Save some links first! Until you add your own codes, SupportSystem will be the benefactor.</div>
+                                <button class="btn-primary">Go to Links</button>
                             </div>
                         </div>
                         <div class="tab-bar">
-                            <div class="tab-bar-pill">
-                                <div class="tab-item">
-                                    <div class="tab-icon">⛓</div>
-                                    <span>Links</span>
-                                </div>
-                                <div class="tab-item active">
-                                    <div class="tab-icon"><i class="fa-solid fa-money-bill-trend-up"></i></div>
-                                    <span>Benefactors</span>
-                                </div>
-                                <div class="tab-item">
-                                    <div class="tab-icon">⚙</div>
-                                    <span>Settings</span>
-                                </div>
+                            <div class="tab-item">
+                                <div class="tab-icon">⛓</div>
+                                <span>Links</span>
+                            </div>
+                            <div class="tab-item active">
+                                <div class="tab-icon">♡</div>
+                                <span>Benefactors</span>
+                            </div>
+                            <div class="tab-item">
+                                <div class="tab-icon">⚙</div>
+                                <span>Settings</span>
                             </div>
                         </div>
                     </div>
@@ -2588,12 +2591,12 @@
     <!-- SETTINGS TAB SECTION -->
     <div class="section" id="settings">
         <h2 class="section-title">Settings Tab</h2>
-        <p class="section-desc">App preferences, premium features, and data management</p>
+        <p class="section-desc">App preferences with iOS 26 Liquid Glass styling</p>
 
         <div class="mockup-grid">
-            <!-- Settings - Free User -->
+            <!-- Light Mode -->
             <div class="mockup-card">
-                <div class="mockup-label">Settings - Free User</div>
+                <div class="mockup-label">Settings - Light Mode</div>
                 <div class="phone-frame">
                     <div class="phone-screen light">
                         <div class="dynamic-island"></div>
@@ -2602,289 +2605,149 @@
                             <span>100%</span>
                         </div>
                         <div class="screen-content">
-                            <!-- Title -->
-                            <div class="title-row">
-                                <h1 class="screen-title">Settings</h1>
+                            <div class="nav-bar light">
+                                <h1>Settings</h1>
                             </div>
 
-                            <!-- Premium Upsell Banner -->
-                            <div style="background: linear-gradient(135deg, #323232 0%, #1a1a1a 100%); border-radius: 8px; padding: 14px 16px; margin-bottom: 16px; display: flex; align-items: center; justify-content: space-between;">
-                                <div>
-                                    <div style="font-size: 11px; font-weight: 700; color: #fff; margin-bottom: 2px;">SUPPORT SYSTEM+</div>
-                                    <div style="font-size: 9px; color: rgba(255,255,255,0.7);">Unlock premium features for $1/month</div>
-                                </div>
-                                <div style="background: #fff; color: #323232; font-size: 10px; font-weight: 600; padding: 6px 12px; border-radius: 4px;">Upgrade</div>
+                            <div class="section-header" style="margin-top: 8px;">
+                                <h2>Appearance</h2>
                             </div>
 
-                            <!-- Preferences Section -->
-                            <div class="merchant-section-header">
-                                <span>Preferences</span>
-                            </div>
-                            <div class="link-list-item">
-                                <div class="link-list-content">
-                                    <span class="link-list-title">Theme</span>
-                                </div>
-                                <span style="font-size: 11px; color: #888;">System</span>
-                                <span class="link-list-chevron">&#8250;</span>
-                            </div>
-                            <div class="link-list-item alt">
-                                <div class="link-list-content">
-                                    <span class="link-list-title">Satirical Summaries</span>
-                                    <span class="link-list-subtitle">Witty product descriptions</span>
-                                </div>
-                                <!-- Toggle On -->
-                                <div style="width: 42px; height: 26px; background: var(--ios-green); border-radius: 13px; position: relative;">
-                                    <div style="width: 22px; height: 22px; background: #fff; border-radius: 50%; position: absolute; top: 2px; right: 2px; box-shadow: 0 1px 3px rgba(0,0,0,0.2);"></div>
+                            <div class="glass-card">
+                                <div class="list-item">
+                                    <span class="list-item-label">Theme</span>
+                                    <span class="list-item-value">System <span class="chevron">&#8250;</span></span>
                                 </div>
                             </div>
 
-                            <!-- Data Section -->
-                            <div class="merchant-section-header">
-                                <span>Data</span>
-                            </div>
-                            <div class="link-list-item">
-                                <div class="link-list-content">
-                                    <span class="link-list-title">Export Data</span>
-                                </div>
-                                <span class="link-list-chevron">&#8250;</span>
-                            </div>
-                            <div class="link-list-item alt">
-                                <div class="link-list-content">
-                                    <span class="link-list-title">Import Data</span>
-                                </div>
-                                <span class="link-list-chevron">&#8250;</span>
-                            </div>
-                            <div class="link-list-item">
-                                <div class="link-list-content">
-                                    <span class="link-list-title" style="color: var(--ios-red);">Clear All Data</span>
-                                </div>
-                                <span class="link-list-chevron">&#8250;</span>
+                            <div class="section-header">
+                                <h2>Data</h2>
                             </div>
 
-                            <!-- About Section -->
-                            <div class="merchant-section-header">
-                                <span>About</span>
-                            </div>
-                            <div class="link-list-item">
-                                <div class="link-list-content">
-                                    <span class="link-list-title">Version</span>
+                            <div class="glass-card">
+                                <div class="list-item">
+                                    <span class="list-item-label">Export Data</span>
+                                    <span class="list-item-value"><span class="chevron">&#8250;</span></span>
                                 </div>
-                                <span style="font-size: 11px; color: #888;">1.0.0</span>
-                            </div>
-                            <div class="link-list-item alt">
-                                <div class="link-list-content">
-                                    <span class="link-list-title">Privacy Policy</span>
+                                <div class="list-item">
+                                    <span class="list-item-label">Import Data</span>
+                                    <span class="list-item-value"><span class="chevron">&#8250;</span></span>
                                 </div>
-                                <span class="link-list-chevron">&#8250;</span>
+                                <div class="list-item">
+                                    <span class="list-item-label" style="color: var(--ios-red);">Clear All Data</span>
+                                    <span class="list-item-value"><span class="chevron">&#8250;</span></span>
+                                </div>
+                            </div>
+
+                            <div class="section-header">
+                                <h2>About</h2>
+                            </div>
+
+                            <div class="glass-card">
+                                <div class="list-item">
+                                    <span class="list-item-label">Version</span>
+                                    <span class="list-item-value">1.0.0</span>
+                                </div>
+                                <div class="list-item">
+                                    <span class="list-item-label">Privacy Policy</span>
+                                    <span class="list-item-value"><span class="chevron">&#8250;</span></span>
+                                </div>
+                                <div class="list-item">
+                                    <span class="list-item-label">Send Feedback</span>
+                                    <span class="list-item-value"><span class="chevron">&#8250;</span></span>
+                                </div>
                             </div>
                         </div>
                         <div class="tab-bar">
-                            <div class="tab-bar-pill">
-                                <div class="tab-item">
-                                    <div class="tab-icon">⛓</div>
-                                    <span>Links</span>
-                                </div>
-                                <div class="tab-item">
-                                    <div class="tab-icon"><i class="fa-solid fa-money-bill-trend-up"></i></div>
-                                    <span>Benefactors</span>
-                                </div>
-                                <div class="tab-item active">
-                                    <div class="tab-icon">⚙</div>
-                                    <span>Settings</span>
-                                </div>
+                            <div class="tab-item">
+                                <div class="tab-icon">⛓</div>
+                                <span>Links</span>
+                            </div>
+                            <div class="tab-item">
+                                <div class="tab-icon">♡</div>
+                                <span>Benefactors</span>
+                            </div>
+                            <div class="tab-item active">
+                                <div class="tab-icon">⚙</div>
+                                <span>Settings</span>
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
 
-            <!-- Settings - Premium User -->
+            <!-- Dark Mode -->
             <div class="mockup-card">
-                <div class="mockup-label">Settings - Premium User</div>
+                <div class="mockup-label">Settings - Dark Mode</div>
                 <div class="phone-frame">
-                    <div class="phone-screen light">
+                    <div class="phone-screen dark">
                         <div class="dynamic-island"></div>
-                        <div class="status-bar light">
+                        <div class="status-bar dark">
                             <span>9:41</span>
                             <span>100%</span>
                         </div>
                         <div class="screen-content">
-                            <!-- Title -->
-                            <div class="title-row">
-                                <h1 class="screen-title">Settings</h1>
+                            <div class="nav-bar dark">
+                                <h1>Settings</h1>
                             </div>
 
-                            <!-- Premium Badge -->
-                            <div style="background: rgba(50, 50, 50, 0.05); border: 1px solid rgba(50, 50, 50, 0.1); border-radius: 8px; padding: 12px 16px; margin-bottom: 16px; display: flex; align-items: center; gap: 10px;">
-                                <span style="font-size: 16px;">✦</span>
-                                <div>
-                                    <div style="font-size: 11px; font-weight: 700; color: #323232;">SUPPORT SYSTEM+</div>
-                                    <div style="font-size: 9px; color: #888;">Premium member · Renews Jan 2026</div>
-                                </div>
+                            <div class="section-header" style="margin-top: 8px;">
+                                <h2>Appearance</h2>
                             </div>
 
-                            <!-- Preferences Section -->
-                            <div class="merchant-section-header">
-                                <span>Preferences</span>
-                            </div>
-                            <div class="link-list-item">
-                                <div class="link-list-content">
-                                    <span class="link-list-title">Theme</span>
-                                </div>
-                                <span style="font-size: 11px; color: #888;">System</span>
-                                <span class="link-list-chevron">&#8250;</span>
-                            </div>
-                            <div class="link-list-item alt">
-                                <div class="link-list-content">
-                                    <span class="link-list-title">Satirical Summaries</span>
-                                    <span class="link-list-subtitle">Witty product descriptions</span>
-                                </div>
-                                <!-- Toggle Off -->
-                                <div style="width: 42px; height: 26px; background: rgba(0,0,0,0.1); border-radius: 13px; position: relative;">
-                                    <div style="width: 22px; height: 22px; background: #fff; border-radius: 50%; position: absolute; top: 2px; left: 2px; box-shadow: 0 1px 3px rgba(0,0,0,0.2);"></div>
+                            <div class="glass-card dark">
+                                <div class="list-item dark">
+                                    <span class="list-item-label dark">Theme</span>
+                                    <span class="list-item-value">Dark <span class="chevron">&#8250;</span></span>
                                 </div>
                             </div>
 
-                            <!-- Premium Features Section -->
-                            <div class="merchant-section-header" style="color: #323232;">
-                                <span>Premium Features</span>
-                                <span style="font-size: 8px; background: #323232; color: #fff; padding: 2px 6px; border-radius: 3px;">PRO</span>
+                            <div class="section-header">
+                                <h2>Data</h2>
                             </div>
-                            <div class="link-list-item">
-                                <div class="link-list-content">
-                                    <span class="link-list-title">Price Alerts</span>
-                                    <span class="link-list-subtitle">Get notified when prices drop</span>
+
+                            <div class="glass-card dark">
+                                <div class="list-item dark">
+                                    <span class="list-item-label dark">Export Data</span>
+                                    <span class="list-item-value"><span class="chevron">&#8250;</span></span>
                                 </div>
-                                <!-- Toggle On -->
-                                <div style="width: 42px; height: 26px; background: var(--ios-green); border-radius: 13px; position: relative;">
-                                    <div style="width: 22px; height: 22px; background: #fff; border-radius: 50%; position: absolute; top: 2px; right: 2px; box-shadow: 0 1px 3px rgba(0,0,0,0.2);"></div>
+                                <div class="list-item dark">
+                                    <span class="list-item-label dark">Import Data</span>
+                                    <span class="list-item-value"><span class="chevron">&#8250;</span></span>
                                 </div>
-                            </div>
-                            <div class="link-list-item alt">
-                                <div class="link-list-content">
-                                    <span class="link-list-title">Link Collections</span>
-                                    <span class="link-list-subtitle">Organize links into folders</span>
-                                </div>
-                                <span class="link-list-chevron">&#8250;</span>
-                            </div>
-                            <div class="link-list-item">
-                                <div class="link-list-content">
-                                    <span class="link-list-title">Cloud Sync</span>
-                                    <span class="link-list-subtitle">Sync across all your devices</span>
-                                </div>
-                                <!-- Toggle On -->
-                                <div style="width: 42px; height: 26px; background: var(--ios-green); border-radius: 13px; position: relative;">
-                                    <div style="width: 22px; height: 22px; background: #fff; border-radius: 50%; position: absolute; top: 2px; right: 2px; box-shadow: 0 1px 3px rgba(0,0,0,0.2);"></div>
+                                <div class="list-item dark">
+                                    <span class="list-item-label dark" style="color: #ff453a;">Clear All Data</span>
+                                    <span class="list-item-value"><span class="chevron">&#8250;</span></span>
                                 </div>
                             </div>
 
-                            <!-- Data Section -->
-                            <div class="merchant-section-header">
-                                <span>Data</span>
+                            <div class="section-header">
+                                <h2>About</h2>
                             </div>
-                            <div class="link-list-item">
-                                <div class="link-list-content">
-                                    <span class="link-list-title">Export Data</span>
+
+                            <div class="glass-card dark">
+                                <div class="list-item dark">
+                                    <span class="list-item-label dark">Version</span>
+                                    <span class="list-item-value">1.0.0</span>
                                 </div>
-                                <span class="link-list-chevron">&#8250;</span>
-                            </div>
-                            <div class="link-list-item alt">
-                                <div class="link-list-content">
-                                    <span class="link-list-title">Import Data</span>
-                                </div>
-                                <span class="link-list-chevron">&#8250;</span>
-                            </div>
-                        </div>
-                        <div class="tab-bar">
-                            <div class="tab-bar-pill">
-                                <div class="tab-item">
-                                    <div class="tab-icon">⛓</div>
-                                    <span>Links</span>
-                                </div>
-                                <div class="tab-item">
-                                    <div class="tab-icon"><i class="fa-solid fa-money-bill-trend-up"></i></div>
-                                    <span>Benefactors</span>
-                                </div>
-                                <div class="tab-item active">
-                                    <div class="tab-icon">⚙</div>
-                                    <span>Settings</span>
+                                <div class="list-item dark">
+                                    <span class="list-item-label dark">Privacy Policy</span>
+                                    <span class="list-item-value"><span class="chevron">&#8250;</span></span>
                                 </div>
                             </div>
                         </div>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Subscribe Screen -->
-            <div class="mockup-card">
-                <div class="mockup-label">Subscribe Screen</div>
-                <div class="phone-frame">
-                    <div class="phone-screen light">
-                        <div class="dynamic-island"></div>
-                        <div class="status-bar light">
-                            <span>9:41</span>
-                            <span>100%</span>
-                        </div>
-                        <div class="screen-content no-tabs" style="display: flex; flex-direction: column;">
-                            <!-- Header -->
-                            <div style="display: flex; justify-content: space-between; align-items: center; padding: 8px 0 16px;">
-                                <span style="color: #323232; font-size: 14px;">Cancel</span>
-                                <span style="width: 40px;"></span>
+                        <div class="tab-bar dark">
+                            <div class="tab-item">
+                                <div class="tab-icon">⛓</div>
+                                <span>Links</span>
                             </div>
-
-                            <!-- Content -->
-                            <div style="flex: 1; display: flex; flex-direction: column; align-items: center; text-align: center; padding: 0 10px;">
-                                <!-- Icon -->
-                                <div style="width: 70px; height: 70px; background: #323232; border-radius: 16px; display: flex; align-items: center; justify-content: center; margin-bottom: 16px;">
-                                    <span style="font-size: 32px; color: #fff;">✦</span>
-                                </div>
-
-                                <h2 style="font-size: 18px; font-weight: 700; color: #323232; text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 4px;">Support System+</h2>
-                                <p style="font-size: 10px; color: #888; margin-bottom: 20px;">Unlock the full potential</p>
-
-                                <!-- Features List -->
-                                <div style="width: 100%; text-align: left; margin-bottom: 24px;">
-                                    <div style="display: flex; align-items: center; gap: 10px; padding: 10px 0; border-bottom: 1px solid rgba(0,0,0,0.06);">
-                                        <span style="color: var(--ios-green); font-size: 12px;"><i class="fa-solid fa-check"></i></span>
-                                        <div>
-                                            <span style="font-size: 12px; font-weight: 600; color: #323232;">Price Alerts</span>
-                                            <p style="font-size: 9px; color: #888; margin-top: 1px;">Get notified when prices drop</p>
-                                        </div>
-                                    </div>
-                                    <div style="display: flex; align-items: center; gap: 10px; padding: 10px 0; border-bottom: 1px solid rgba(0,0,0,0.06);">
-                                        <span style="color: var(--ios-green); font-size: 12px;"><i class="fa-solid fa-check"></i></span>
-                                        <div>
-                                            <span style="font-size: 12px; font-weight: 600; color: #323232;">Link Collections</span>
-                                            <p style="font-size: 9px; color: #888; margin-top: 1px;">Organize links into custom folders</p>
-                                        </div>
-                                    </div>
-                                    <div style="display: flex; align-items: center; gap: 10px; padding: 10px 0; border-bottom: 1px solid rgba(0,0,0,0.06);">
-                                        <span style="color: var(--ios-green); font-size: 12px;"><i class="fa-solid fa-check"></i></span>
-                                        <div>
-                                            <span style="font-size: 12px; font-weight: 600; color: #323232;">Cloud Sync</span>
-                                            <p style="font-size: 9px; color: #888; margin-top: 1px;">Access your links on all devices</p>
-                                        </div>
-                                    </div>
-                                    <div style="display: flex; align-items: center; gap: 10px; padding: 10px 0;">
-                                        <span style="color: var(--ios-green); font-size: 12px;"><i class="fa-solid fa-check"></i></span>
-                                        <div>
-                                            <span style="font-size: 12px; font-weight: 600; color: #323232;">Support Development</span>
-                                            <p style="font-size: 9px; color: #888; margin-top: 1px;">Help us build new features</p>
-                                        </div>
-                                    </div>
-                                </div>
-
-                                <!-- Price -->
-                                <div style="margin-bottom: 16px;">
-                                    <span style="font-size: 28px; font-weight: 700; color: #323232;">$1</span>
-                                    <span style="font-size: 12px; color: #888;">/month</span>
-                                </div>
-
-                                <!-- Subscribe Button -->
-                                <button style="width: 100%; padding: 14px 20px; background: #323232; color: #fff; border: none; border-radius: 8px; font-size: 13px; font-weight: 600;">Subscribe Now</button>
-
-                                <!-- Terms -->
-                                <p style="font-size: 8px; color: #aaa; margin-top: 12px; line-height: 1.4;">Cancel anytime. Recurring billing. By subscribing you agree to our Terms of Service.</p>
+                            <div class="tab-item">
+                                <div class="tab-icon">♡</div>
+                                <span>Benefactors</span>
+                            </div>
+                            <div class="tab-item active">
+                                <div class="tab-icon">⚙</div>
+                                <span>Settings</span>
                             </div>
                         </div>
                     </div>
@@ -2893,268 +2756,137 @@
         </div>
     </div>
 
-    <!-- ADD LINK FLOW SECTION -->
-    <div class="section" id="addlink">
-        <h2 class="section-title">Add Link Flow</h2>
-        <p class="section-desc">Modal and Share Extension screens - unified newspaper-style design</p>
-
-        <div class="changelog">
-            <h4>Flow Overview</h4>
-            <ul>
-                <li><strong>Screen 0 (Modal only):</strong> Paste Link - form field to paste a URL</li>
-                <li><strong>Screen 1:</strong> Link Info - displays product/page details from the shared link</li>
-                <li><strong>Screen 2:</strong> Benefactor Detection - shows if a code was detected or lets user assign one</li>
-                <li><strong>Screen 3:</strong> Success - confirmation with benefactor info</li>
-            </ul>
-        </div>
-
-        <h3 style="font-size: 18px; font-weight: 700; color: #323232; margin: 32px 0 16px; padding-bottom: 8px; border-bottom: 2px solid #323232;">Modal Flow (from + button)</h3>
+    <!-- SHARE EXTENSION SECTION -->
+    <div class="section" id="share">
+        <h2 class="section-title">Share Extension</h2>
+        <p class="section-desc">iOS share sheet with Liquid Glass styling</p>
 
         <div class="mockup-grid">
-            <!-- Screen 0: Paste Link (Modal Only) -->
+            <!-- Code Ready -->
             <div class="mockup-card">
-                <div class="mockup-label">Screen 0 - Paste Link <span class="recommended">Modal Only</span></div>
+                <div class="mockup-label">User's Code Ready <span class="recommended">Happy Path</span></div>
                 <div class="phone-frame">
                     <div class="phone-screen light">
                         <div class="dynamic-island"></div>
-                        <div class="status-bar light">
-                            <span>9:41</span>
-                            <span>100%</span>
-                        </div>
-                        <div class="screen-content">
-                            <!-- Modal Header -->
-                            <div style="display: flex; justify-content: space-between; align-items: center; padding: 8px 0 16px; border-bottom: 1px solid rgba(0,0,0,0.08); margin-bottom: 16px;">
-                                <span style="color: #323232; font-size: 14px;">Cancel</span>
-                                <span style="font-weight: 700; font-size: 14px; text-transform: uppercase; letter-spacing: 0.5px;">Add Link</span>
-                                <span style="width: 40px;"></span>
-                            </div>
-
-                            <div style="text-align: center; padding: 16px 0 24px;">
-                                <div style="width: 40px; height: 40px; background: #323232; border-radius: 50%; margin: 0 auto 12px; display: flex; align-items: center; justify-content: center;">
-                                    <span style="color: #fff; font-size: 20px; line-height: 1;">+</span>
+                        <div class="share-modal">
+                            <div class="share-sheet">
+                                <div class="share-header">
+                                    <span style="color: var(--ios-blue);">Cancel</span>
+                                    <span style="font-weight: 600;">Support System</span>
+                                    <span class="share-btn">Save</span>
                                 </div>
-                                <h3 style="font-size: 14px; font-weight: 700; margin-bottom: 4px; color: #323232;">Add a Link</h3>
-                                <p style="color: #888; font-size: 10px; font-style: italic;">Paste a product link to save it</p>
-                            </div>
 
-                            <div style="margin-bottom: 16px;">
-                                <label style="font-size: 10px; font-weight: 600; color: #555; text-transform: uppercase; letter-spacing: 0.5px; display: block; margin-bottom: 6px;">Link URL</label>
-                                <input type="text" style="width: 100%; padding: 10px 12px; border: 1px solid rgba(0,0,0,0.15); border-radius: 6px; font-size: 12px; background: rgba(0,0,0,0.02);" placeholder="https://amazon.com/product...">
-                            </div>
+                                <div class="glass-card" style="margin-bottom: 16px;">
+                                    <div class="link-card">
+                                        <div class="link-favicon">A</div>
+                                        <div class="link-info">
+                                            <div class="link-title">Sony WH-1000XM5 Wireless...</div>
+                                            <div class="link-domain">amazon.com</div>
+                                        </div>
+                                    </div>
+                                </div>
 
-                            <button style="width: 100%; padding: 12px; background: #323232; color: #fff; border: none; border-radius: 6px; font-size: 12px; font-weight: 600;">Continue</button>
+                                <div class="status-box success">
+                                    <div class="status-box-icon">&#10003;</div>
+                                    <div class="status-box-content">
+                                        <div class="status-box-title">Benefactor Code Ready</div>
+                                        <div class="status-box-desc">MKBHD &middot; Code: TECH20</div>
+                                    </div>
+                                </div>
 
-                            <div style="margin-top: 16px; padding: 10px 12px; background: rgba(0,0,0,0.03); border: 1px solid rgba(0,0,0,0.08); border-radius: 4px;">
-                                <p style="font-size: 9px; color: #888; font-style: italic;">Tip: Use the Share Extension in Safari for faster saving</p>
+                                <div class="form-group">
+                                    <label class="form-label">Note (optional)</label>
+                                    <input type="text" class="form-input" placeholder="Why are you saving this?">
+                                </div>
+
+                                <div class="info-box" style="margin-top: 12px;">
+                                    <p style="font-size: 13px;">Benefactor: <span style="color: var(--ios-green); font-weight: 600;">MKBHD</span></p>
+                                </div>
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
 
-            <!-- Screen 1: Link Info (Modal) -->
+            <!-- SupportSystem Default -->
             <div class="mockup-card">
-                <div class="mockup-label">Screen 1 - Link Info <span class="recommended">Modal</span></div>
+                <div class="mockup-label">SupportSystem Default</div>
                 <div class="phone-frame">
                     <div class="phone-screen light">
                         <div class="dynamic-island"></div>
-                        <div class="status-bar light">
-                            <span>9:41</span>
-                            <span>100%</span>
-                        </div>
-                        <div class="screen-content">
-                            <!-- Modal Header -->
-                            <div style="display: flex; justify-content: space-between; align-items: center; padding: 8px 0 16px; border-bottom: 1px solid rgba(0,0,0,0.08); margin-bottom: 16px;">
-                                <span style="color: #323232; font-size: 14px;">← Back</span>
-                                <span style="font-weight: 700; font-size: 14px; text-transform: uppercase; letter-spacing: 0.5px;">Link Details</span>
-                                <span style="width: 40px;"></span>
-                            </div>
-
-                            <!-- Merchant Header -->
-                            <div class="merchant-section-header accent-amazon" style="margin: 0 -16px 0;">
-                                <span>Amazon</span>
-                                <span class="benefactor-icon active"><i class="fa-solid fa-money-bill-trend-up"></i></span>
-                            </div>
-
-                            <!-- Product Info - Link List Style -->
-                            <div style="padding: 12px 0; border-bottom: 1px solid rgba(0,0,0,0.08);">
-                                <div style="display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 4px;">
-                                    <span style="font-size: 11px; font-weight: 700; color: #323232;">Sony WH-1000XM5</span>
-                                    <span style="font-size: 9px; color: #888;">$349.99</span>
+                        <div class="share-modal">
+                            <div class="share-sheet">
+                                <div class="share-header">
+                                    <span style="color: var(--ios-blue);">Cancel</span>
+                                    <span style="font-weight: 600;">Support System</span>
+                                    <span class="share-btn">Save</span>
                                 </div>
-                                <p style="font-size: 9px; color: #888; font-style: italic; line-height: 1.2;">Silence the world. Premium noise-canceling bliss.</p>
-                            </div>
 
-                            <!-- Meta Description -->
-                            <div style="padding: 12px 0;">
-                                <div style="font-size: 9px; font-weight: 600; color: #555; text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 6px;">Description</div>
-                                <p style="font-size: 10px; color: #555; line-height: 1.4;">Industry-leading noise canceling headphones with Auto NC Optimizer, crystal clear hands-free calling, and up to 30-hour battery life. Features multipoint connection and speak-to-chat technology.</p>
-                            </div>
-
-                            <!-- Additional Details -->
-                            <div style="padding: 12px 0;">
-                                <div style="display: flex; justify-content: space-between; margin-bottom: 6px;">
-                                    <span style="font-size: 10px; color: #888;">Category</span>
-                                    <span style="font-size: 10px; color: #323232;">Electronics</span>
+                                <div class="glass-card" style="margin-bottom: 16px;">
+                                    <div class="link-card">
+                                        <div class="link-favicon" style="background: linear-gradient(135deg, #000 0%, #333 100%);">N</div>
+                                        <div class="link-info">
+                                            <div class="link-title">Air Max 90 - Men's Running</div>
+                                            <div class="link-domain">nike.com</div>
+                                        </div>
+                                    </div>
                                 </div>
-                                <div style="display: flex; justify-content: space-between;">
-                                    <span style="font-size: 10px; color: #888;">URL</span>
-                                    <span style="font-size: 10px; color: #323232; max-width: 150px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;">amazon.com/dp/B09...</span>
+
+                                <div class="status-box info">
+                                    <div class="status-box-icon">&#128279;</div>
+                                    <div class="status-box-content" style="flex: 1;">
+                                        <div class="status-box-title">Using SupportSystem</div>
+                                        <div class="status-box-desc">Add your own code?</div>
+                                    </div>
+                                    <span style="color: var(--ios-blue); font-weight: 600; font-size: 15px;">Add</span>
+                                </div>
+
+                                <div class="info-box">
+                                    <p>&#128161; No code set for nike.com. SupportSystem will be the benefactor. You can add your own code later.</p>
+                                </div>
+
+                                <div class="info-box" style="margin-top: 12px; background: rgba(0, 122, 255, 0.1); border-color: rgba(0, 122, 255, 0.2);">
+                                    <p style="font-size: 13px; color: #0056b3;">Benefactor: <span style="color: var(--ios-blue); font-weight: 600;">SupportSystem</span></p>
                                 </div>
                             </div>
-
-                            <button style="width: 100%; padding: 12px; background: #323232; color: #fff; border: none; border-radius: 6px; font-size: 12px; font-weight: 600; margin-top: 16px;">Continue</button>
                         </div>
                     </div>
                 </div>
             </div>
 
-            <!-- Screen 2: Benefactor Detection (Modal - Code Detected) -->
+            <!-- Success Confirmation -->
             <div class="mockup-card">
-                <div class="mockup-label">Screen 2 - Code Detected <span class="recommended">Modal</span></div>
+                <div class="mockup-label">Save Confirmation</div>
                 <div class="phone-frame">
                     <div class="phone-screen light">
                         <div class="dynamic-island"></div>
-                        <div class="status-bar light">
-                            <span>9:41</span>
-                            <span>100%</span>
-                        </div>
-                        <div class="screen-content">
-                            <!-- Modal Header -->
-                            <div style="display: flex; justify-content: space-between; align-items: center; padding: 8px 0 16px; border-bottom: 1px solid rgba(0,0,0,0.08); margin-bottom: 16px;">
-                                <span style="color: #323232; font-size: 14px;">← Back</span>
-                                <span style="font-weight: 700; font-size: 14px; text-transform: uppercase; letter-spacing: 0.5px;">Benefactor</span>
-                                <span style="width: 40px;"></span>
-                            </div>
-
-                            <!-- Detection Status -->
-                            <div style="background: rgba(52, 199, 89, 0.1); border: 1px solid rgba(52, 199, 89, 0.3); padding: 10px 12px; border-radius: 4px; margin-bottom: 16px; display: flex; align-items: center; gap: 10px;">
-                                <span style="color: var(--ios-green); font-size: 14px;">✓</span>
-                                <div>
-                                    <div style="font-size: 11px; font-weight: 600; color: #323232;">Benefactor Detected</div>
-                                    <div style="font-size: 9px; color: #888;">This link supports a benefactor</div>
+                        <div class="share-modal">
+                            <div class="share-sheet" style="text-align: center; padding: 40px 20px;">
+                                <div style="width: 80px; height: 80px; background: var(--ios-green); border-radius: 50%; margin: 0 auto 20px; display: flex; align-items: center; justify-content: center; box-shadow: 0 8px 24px rgba(52, 199, 89, 0.4);">
+                                    <span style="color: #fff; font-size: 40px;">&#10003;</span>
                                 </div>
+                                <h3 style="font-size: 24px; font-weight: 700; margin-bottom: 8px;">Link Saved!</h3>
+                                <p style="color: var(--ios-gray); font-size: 16px; margin-bottom: 8px;">amazon.com</p>
+                                <p style="color: var(--ios-green); font-size: 15px; margin-bottom: 24px;">Benefactor: MKBHD</p>
+                                <button class="btn-primary">Open in App</button>
+                                <button class="btn-secondary">Done</button>
                             </div>
-
-                            <!-- Detected Code Display -->
-                            <div style="text-align: center; padding: 16px; background: rgba(0,0,0,0.03); border: 1px solid rgba(0,0,0,0.08); border-radius: 4px; margin-bottom: 16px;">
-                                <div style="font-size: 9px; color: #888; text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 6px;">Benefactor Found</div>
-                                <div style="font-size: 18px; font-weight: 700; color: var(--ios-green); margin-bottom: 2px;">MKBHD-20</div>
-                                <div style="font-size: 9px; color: #888; font-style: italic;">will receive your support</div>
-                            </div>
-
-                            <div style="padding: 10px 12px; background: rgba(0,0,0,0.03); border: 1px solid rgba(0,0,0,0.08); border-radius: 4px; margin-bottom: 16px;">
-                                <p style="font-size: 9px; color: #888; font-style: italic; line-height: 1.3;">This link already supports a benefactor. Your purchase will help support them.</p>
-                            </div>
-
-                            <button style="width: 100%; padding: 12px; background: #323232; color: #fff; border: none; border-radius: 6px; font-size: 12px; font-weight: 600; margin-bottom: 8px;">Save & Support This Benefactor</button>
-                            <button style="width: 100%; padding: 12px; background: transparent; color: #323232; border: none; font-size: 12px;">Use Different Benefactor</button>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Screen 2b: Benefactor Detection (Modal - No Code) -->
-            <div class="mockup-card">
-                <div class="mockup-label">Screen 2 - No Code Found <span class="recommended">Modal</span></div>
-                <div class="phone-frame">
-                    <div class="phone-screen light">
-                        <div class="dynamic-island"></div>
-                        <div class="status-bar light">
-                            <span>9:41</span>
-                            <span>100%</span>
-                        </div>
-                        <div class="screen-content">
-                            <!-- Modal Header -->
-                            <div style="display: flex; justify-content: space-between; align-items: center; padding: 8px 0 16px; border-bottom: 1px solid rgba(0,0,0,0.08); margin-bottom: 16px;">
-                                <span style="color: #323232; font-size: 14px;">← Back</span>
-                                <span style="font-weight: 700; font-size: 14px; text-transform: uppercase; letter-spacing: 0.5px;">Benefactor</span>
-                                <span style="width: 40px;"></span>
-                            </div>
-
-                            <!-- Detection Status -->
-                            <div style="background: rgba(0, 122, 255, 0.1); border: 1px solid rgba(0, 122, 255, 0.3); padding: 10px 12px; border-radius: 4px; margin-bottom: 16px; display: flex; align-items: center; gap: 10px;">
-                                <span style="font-size: 14px;">🔍</span>
-                                <div>
-                                    <div style="font-size: 11px; font-weight: 600; color: #323232;">No Benefactor Detected</div>
-                                    <div style="font-size: 9px; color: #888;">Choose a benefactor for this link</div>
-                                </div>
-                            </div>
-
-                            <!-- Section Header -->
-                            <div style="font-size: 10px; font-weight: 600; color: #555; text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 8px;">Your Benefactors for Amazon</div>
-
-                            <!-- Benefactor Option 1 - Selected -->
-                            <div style="padding: 10px 12px; border: 1px solid rgba(0,0,0,0.08); border-radius: 4px; margin-bottom: 6px; display: flex; align-items: center; justify-content: space-between; background: rgba(0,0,0,0.02);">
-                                <div>
-                                    <div style="font-size: 11px; font-weight: 700; color: #323232;">MKBHD</div>
-                                    <div style="font-size: 9px; color: #888;">Code: TECH20</div>
-                                </div>
-                                <div style="width: 16px; height: 16px; border: 2px solid #323232; border-radius: 50%; display: flex; align-items: center; justify-content: center;">
-                                    <div style="width: 8px; height: 8px; background: #323232; border-radius: 50%;"></div>
-                                </div>
-                            </div>
-
-                            <!-- Benefactor Option 2 -->
-                            <div style="padding: 10px 12px; border: 1px solid rgba(0,0,0,0.08); border-radius: 4px; margin-bottom: 6px; display: flex; align-items: center; justify-content: space-between;">
-                                <div>
-                                    <div style="font-size: 11px; font-weight: 700; color: #323232;">Linus Tech Tips</div>
-                                    <div style="font-size: 9px; color: #888;">Code: LTT15</div>
-                                </div>
-                                <div style="width: 16px; height: 16px; border: 2px solid #888; border-radius: 50%;"></div>
-                            </div>
-
-                            <!-- SupportSystem Option -->
-                            <div style="padding: 10px 12px; border: 1px solid rgba(0,0,0,0.08); border-radius: 4px; margin-bottom: 16px; display: flex; align-items: center; justify-content: space-between;">
-                                <div>
-                                    <div style="font-size: 11px; font-weight: 700; color: #323232;">SupportSystem</div>
-                                    <div style="font-size: 9px; color: #888; font-style: italic;">Default fallback</div>
-                                </div>
-                                <div style="width: 16px; height: 16px; border: 2px solid #888; border-radius: 50%;"></div>
-                            </div>
-
-                            <button style="width: 100%; padding: 12px; background: #323232; color: #fff; border: none; border-radius: 6px; font-size: 12px; font-weight: 600;">Save Link</button>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Screen 3: Success -->
-            <div class="mockup-card">
-                <div class="mockup-label">Screen 3 - Success <span class="recommended">Modal</span></div>
-                <div class="phone-frame">
-                    <div class="phone-screen light">
-                        <div class="dynamic-island"></div>
-                        <div class="status-bar light">
-                            <span>9:41</span>
-                            <span>100%</span>
-                        </div>
-                        <div class="screen-content" style="display: flex; flex-direction: column; align-items: center; justify-content: center; text-align: center; padding-top: 40px;">
-                            <div style="width: 50px; height: 50px; background: var(--ios-green); border-radius: 50%; margin-bottom: 16px; display: flex; align-items: center; justify-content: center;">
-                                <span style="color: #fff; font-size: 24px;">✓</span>
-                            </div>
-                            <h3 style="font-size: 16px; font-weight: 700; margin-bottom: 4px; color: #323232;">Link Saved!</h3>
-                            <p style="color: #888; font-size: 11px; margin-bottom: 2px;">Sony WH-1000XM5</p>
-                            <p style="color: #888; font-size: 10px; margin-bottom: 16px;">amazon.com</p>
-
-                            <div style="padding: 10px 20px; background: rgba(0,0,0,0.03); border: 1px solid rgba(0,0,0,0.08); border-radius: 4px; margin-bottom: 24px;">
-                                <div style="font-size: 9px; color: #888; text-transform: uppercase; letter-spacing: 0.5px;">Benefactor</div>
-                                <div style="font-size: 14px; font-weight: 700; color: var(--ios-green);">MKBHD</div>
-                            </div>
-
-                            <button style="width: 100%; padding: 12px; background: #323232; color: #fff; border: none; border-radius: 6px; font-size: 12px; font-weight: 600;">Done</button>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
+    </div>
 
-        <h3 style="font-size: 18px; font-weight: 700; color: #323232; margin: 48px 0 16px; padding-bottom: 8px; border-bottom: 2px solid #323232;">Share Extension Flow (from Safari)</h3>
+    <!-- FORMS & MODALS SECTION -->
+    <div class="section" id="forms">
+        <h2 class="section-title">Forms & Modals</h2>
+        <p class="section-desc">Add/Edit benefactor with iOS 26 Liquid Glass styling</p>
 
         <div class="mockup-grid">
-            <!-- Screen 1: Link Info (Share Extension) -->
+            <!-- Add Benefactor Code -->
             <div class="mockup-card">
-                <div class="mockup-label">Screen 1 - Link Info <span class="recommended">Share Ext</span></div>
+                <div class="mockup-label">Add Benefactor Code</div>
                 <div class="phone-frame">
                     <div class="phone-screen light">
                         <div class="dynamic-island"></div>
@@ -3162,56 +2894,50 @@
                             <span>9:41</span>
                             <span>100%</span>
                         </div>
-                        <div class="screen-content">
-                            <!-- Modal Header -->
-                            <div style="display: flex; justify-content: space-between; align-items: center; padding: 8px 0 16px; border-bottom: 1px solid rgba(0,0,0,0.08); margin-bottom: 16px;">
-                                <span style="color: #323232; font-size: 14px;">Cancel</span>
-                                <span style="font-weight: 700; font-size: 14px; text-transform: uppercase; letter-spacing: 0.5px;">Support System</span>
-                                <span style="width: 40px;"></span>
+                        <div class="screen-content no-tabs">
+                            <div style="display: flex; justify-content: space-between; align-items: center; padding: 10px 0 20px;">
+                                <span style="color: var(--ios-blue); font-size: 17px;">Cancel</span>
+                                <span style="font-weight: 600; font-size: 17px;">Add Code</span>
+                                <span style="color: var(--ios-blue); font-size: 17px; font-weight: 600;">Save</span>
                             </div>
 
-                            <!-- Merchant Header -->
-                            <div class="merchant-section-header accent-amazon" style="margin: 0 -16px 0;">
-                                <span>Amazon</span>
-                                <span class="benefactor-icon active"><i class="fa-solid fa-money-bill-trend-up"></i></span>
+                            <div style="text-align: center; margin-bottom: 24px;">
+                                <div class="merchant-logo" style="width: 70px; height: 70px; font-size: 28px; margin: 0 auto 12px; background: linear-gradient(135deg, #000 0%, #333 100%);">N</div>
+                                <h2 style="font-size: 22px; font-weight: 600;">nike.com</h2>
+                                <p style="color: var(--ios-gray); font-size: 15px;">2 links saved</p>
+                                <p style="color: var(--ios-blue); font-size: 14px; margin-top: 4px;">Currently: SupportSystem</p>
                             </div>
 
-                            <!-- Product Info - Link List Style -->
-                            <div style="padding: 12px 0; border-bottom: 1px solid rgba(0,0,0,0.08);">
-                                <div style="display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 4px;">
-                                    <span style="font-size: 11px; font-weight: 700; color: #323232;">Sony WH-1000XM5</span>
-                                    <span style="font-size: 9px; color: #888;">$349.99</span>
-                                </div>
-                                <p style="font-size: 9px; color: #888; font-style: italic; line-height: 1.2;">Silence the world. Premium noise-canceling bliss.</p>
+                            <div class="form-group">
+                                <label class="form-label">Creator Name *</label>
+                                <input type="text" class="form-input" placeholder="e.g., MKBHD, Linus Tech Tips">
                             </div>
 
-                            <!-- Meta Description -->
-                            <div style="padding: 12px 0;">
-                                <div style="font-size: 9px; font-weight: 600; color: #555; text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 6px;">Description</div>
-                                <p style="font-size: 10px; color: #555; line-height: 1.4;">Industry-leading noise canceling headphones with Auto NC Optimizer, crystal clear hands-free calling, and up to 30-hour battery life. Features multipoint connection and speak-to-chat technology.</p>
+                            <div class="form-group">
+                                <label class="form-label">Code *</label>
+                                <input type="text" class="form-input" placeholder="e.g., SAVE20, CREATOR15">
                             </div>
 
-                            <!-- Additional Details -->
-                            <div style="padding: 12px 0;">
-                                <div style="display: flex; justify-content: space-between; margin-bottom: 6px;">
-                                    <span style="font-size: 10px; color: #888;">Category</span>
-                                    <span style="font-size: 10px; color: #323232;">Electronics</span>
-                                </div>
-                                <div style="display: flex; justify-content: space-between;">
-                                    <span style="font-size: 10px; color: #888;">URL</span>
-                                    <span style="font-size: 10px; color: #323232; max-width: 150px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;">amazon.com/dp/B09...</span>
-                                </div>
+                            <div class="form-group">
+                                <label class="form-label">Code Type</label>
+                                <select class="form-select">
+                                    <option>Affiliate</option>
+                                    <option>Referral</option>
+                                    <option>Coupon</option>
+                                </select>
                             </div>
 
-                            <button style="width: 100%; padding: 12px; background: #323232; color: #fff; border: none; border-radius: 6px; font-size: 12px; font-weight: 600; margin-top: 16px;">Continue</button>
+                            <div class="info-box">
+                                <p>&#128161; Find affiliate codes in your favorite creator's video descriptions or social media bios.</p>
+                            </div>
                         </div>
                     </div>
                 </div>
             </div>
 
-            <!-- Screen 2: Benefactor Detection (Share Ext - Code Detected) -->
+            <!-- Edit Benefactor Code -->
             <div class="mockup-card">
-                <div class="mockup-label">Screen 2 - Code Detected <span class="recommended">Share Ext</span></div>
+                <div class="mockup-label">Edit Benefactor Code</div>
                 <div class="phone-frame">
                     <div class="phone-screen light">
                         <div class="dynamic-island"></div>
@@ -3219,44 +2945,47 @@
                             <span>9:41</span>
                             <span>100%</span>
                         </div>
-                        <div class="screen-content">
-                            <!-- Modal Header -->
-                            <div style="display: flex; justify-content: space-between; align-items: center; padding: 8px 0 16px; border-bottom: 1px solid rgba(0,0,0,0.08); margin-bottom: 16px;">
-                                <span style="color: #323232; font-size: 14px;">← Back</span>
-                                <span style="font-weight: 700; font-size: 14px; text-transform: uppercase; letter-spacing: 0.5px;">Benefactor</span>
-                                <span style="width: 40px;"></span>
+                        <div class="screen-content no-tabs">
+                            <div style="display: flex; justify-content: space-between; align-items: center; padding: 10px 0 20px;">
+                                <span style="color: var(--ios-blue); font-size: 17px;">Cancel</span>
+                                <span style="font-weight: 600; font-size: 17px;">Edit Code</span>
+                                <span style="color: var(--ios-blue); font-size: 17px; font-weight: 600;">Save</span>
                             </div>
 
-                            <!-- Detection Status -->
-                            <div style="background: rgba(52, 199, 89, 0.1); border: 1px solid rgba(52, 199, 89, 0.3); padding: 10px 12px; border-radius: 4px; margin-bottom: 16px; display: flex; align-items: center; gap: 10px;">
-                                <span style="color: var(--ios-green); font-size: 14px;">✓</span>
-                                <div>
-                                    <div style="font-size: 11px; font-weight: 600; color: #323232;">Benefactor Detected</div>
-                                    <div style="font-size: 9px; color: #888;">This link supports a benefactor</div>
-                                </div>
+                            <div style="text-align: center; margin-bottom: 24px;">
+                                <div class="merchant-logo" style="width: 70px; height: 70px; font-size: 28px; margin: 0 auto 12px;">A</div>
+                                <h2 style="font-size: 22px; font-weight: 600;">amazon.com</h2>
+                                <p style="color: var(--ios-gray); font-size: 15px;">5 links saved</p>
                             </div>
 
-                            <!-- Detected Code Display -->
-                            <div style="text-align: center; padding: 16px; background: rgba(0,0,0,0.03); border: 1px solid rgba(0,0,0,0.08); border-radius: 4px; margin-bottom: 16px;">
-                                <div style="font-size: 9px; color: #888; text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 6px;">Benefactor Found</div>
-                                <div style="font-size: 18px; font-weight: 700; color: var(--ios-green); margin-bottom: 2px;">MKBHD-20</div>
-                                <div style="font-size: 9px; color: #888; font-style: italic;">will receive your support</div>
+                            <div class="form-group">
+                                <label class="form-label">Creator Name *</label>
+                                <input type="text" class="form-input" value="MKBHD">
                             </div>
 
-                            <div style="padding: 10px 12px; background: rgba(0,0,0,0.03); border: 1px solid rgba(0,0,0,0.08); border-radius: 4px; margin-bottom: 16px;">
-                                <p style="font-size: 9px; color: #888; font-style: italic; line-height: 1.3;">This link already supports a benefactor. Your purchase will help support them.</p>
+                            <div class="form-group">
+                                <label class="form-label">Code *</label>
+                                <input type="text" class="form-input" value="TECH20">
                             </div>
 
-                            <button style="width: 100%; padding: 12px; background: #323232; color: #fff; border: none; border-radius: 6px; font-size: 12px; font-weight: 600; margin-bottom: 8px;">Save & Support This Benefactor</button>
-                            <button style="width: 100%; padding: 12px; background: transparent; color: #323232; border: none; font-size: 12px;">Use Different Benefactor</button>
+                            <div class="form-group">
+                                <label class="form-label">Code Type</label>
+                                <select class="form-select">
+                                    <option selected>Affiliate</option>
+                                    <option>Referral</option>
+                                    <option>Coupon</option>
+                                </select>
+                            </div>
+
+                            <button class="btn-secondary" style="color: var(--ios-red); margin-top: 20px;">Remove Code (Use SupportSystem)</button>
                         </div>
                     </div>
                 </div>
             </div>
 
-            <!-- Screen 2b: Benefactor Detection (Share Ext - No Code) -->
+            <!-- Link Detail -->
             <div class="mockup-card">
-                <div class="mockup-label">Screen 2 - No Code Found <span class="recommended">Share Ext</span></div>
+                <div class="mockup-label">Link Detail View</div>
                 <div class="phone-frame">
                     <div class="phone-screen light">
                         <div class="dynamic-island"></div>
@@ -3264,77 +2993,43 @@
                             <span>9:41</span>
                             <span>100%</span>
                         </div>
-                        <div class="screen-content">
-                            <!-- Modal Header -->
-                            <div style="display: flex; justify-content: space-between; align-items: center; padding: 8px 0 16px; border-bottom: 1px solid rgba(0,0,0,0.08); margin-bottom: 16px;">
-                                <span style="color: #323232; font-size: 14px;">← Back</span>
-                                <span style="font-weight: 700; font-size: 14px; text-transform: uppercase; letter-spacing: 0.5px;">Benefactor</span>
-                                <span style="width: 40px;"></span>
+                        <div class="screen-content no-tabs">
+                            <div style="display: flex; justify-content: space-between; align-items: center; padding: 10px 0;">
+                                <span style="color: var(--ios-blue); font-size: 17px;">&#8592; Back</span>
+                                <span style="color: var(--ios-red); font-size: 17px;">Delete</span>
                             </div>
 
-                            <!-- Detection Status -->
-                            <div style="background: rgba(0, 122, 255, 0.1); border: 1px solid rgba(0, 122, 255, 0.3); padding: 10px 12px; border-radius: 4px; margin-bottom: 16px; display: flex; align-items: center; gap: 10px;">
-                                <span style="font-size: 14px;">🔍</span>
-                                <div>
-                                    <div style="font-size: 11px; font-weight: 600; color: #323232;">No Benefactor Detected</div>
-                                    <div style="font-size: 9px; color: #888;">Choose a benefactor for this link</div>
+                            <div style="text-align: center; padding: 20px 0;">
+                                <div class="link-favicon" style="width: 80px; height: 80px; font-size: 32px; margin: 0 auto 16px; border-radius: var(--radius-lg);">A</div>
+                                <h2 style="font-size: 22px; font-weight: 600; margin-bottom: 4px;">Sony WH-1000XM5</h2>
+                                <p style="color: var(--ios-gray); font-size: 16px;">amazon.com</p>
+                            </div>
+
+                            <div class="status-box success">
+                                <div class="status-box-icon">&#10003;</div>
+                                <div class="status-box-content">
+                                    <div class="status-box-title">Benefactor Code Ready</div>
+                                    <div class="status-box-desc">MKBHD &middot; TECH20</div>
                                 </div>
                             </div>
 
-                            <!-- Section Header -->
-                            <div style="font-size: 10px; font-weight: 600; color: #555; text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 8px;">Your Benefactors for Amazon</div>
-
-                            <!-- Benefactor Option 1 - Selected -->
-                            <div style="padding: 10px 12px; border: 1px solid rgba(0,0,0,0.08); border-radius: 4px; margin-bottom: 6px; display: flex; align-items: center; justify-content: space-between; background: rgba(0,0,0,0.02);">
-                                <div>
-                                    <div style="font-size: 11px; font-weight: 700; color: #323232;">MKBHD</div>
-                                    <div style="font-size: 9px; color: #888;">Code: TECH20</div>
+                            <div class="glass-card">
+                                <div class="list-item">
+                                    <span class="list-item-label">Saved</span>
+                                    <span class="list-item-value">Today, 2:34 PM</span>
                                 </div>
-                                <div style="width: 16px; height: 16px; border: 2px solid #323232; border-radius: 50%; display: flex; align-items: center; justify-content: center;">
-                                    <div style="width: 8px; height: 8px; background: #323232; border-radius: 50%;"></div>
+                                <div class="list-item">
+                                    <span class="list-item-label">Price</span>
+                                    <span class="list-item-value">$349.99</span>
                                 </div>
                             </div>
 
-                            <!-- SupportSystem Option -->
-                            <div style="padding: 10px 12px; border: 1px solid rgba(0,0,0,0.08); border-radius: 4px; margin-bottom: 16px; display: flex; align-items: center; justify-content: space-between;">
-                                <div>
-                                    <div style="font-size: 11px; font-weight: 700; color: #323232;">SupportSystem</div>
-                                    <div style="font-size: 9px; color: #888; font-style: italic;">Default fallback</div>
-                                </div>
-                                <div style="width: 16px; height: 16px; border: 2px solid #888; border-radius: 50%;"></div>
+                            <div class="info-box" style="margin-top: 16px;">
+                                <p style="font-size: 13px;">Benefactor: <span style="color: var(--ios-green); font-weight: 600;">MKBHD</span></p>
                             </div>
 
-                            <button style="width: 100%; padding: 12px; background: #323232; color: #fff; border: none; border-radius: 6px; font-size: 12px; font-weight: 600;">Save Link</button>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Screen 3: Success (Share Extension) -->
-            <div class="mockup-card">
-                <div class="mockup-label">Screen 3 - Success <span class="recommended">Share Ext</span></div>
-                <div class="phone-frame">
-                    <div class="phone-screen light">
-                        <div class="dynamic-island"></div>
-                        <div class="status-bar light">
-                            <span>9:41</span>
-                            <span>100%</span>
-                        </div>
-                        <div class="screen-content" style="display: flex; flex-direction: column; align-items: center; justify-content: center; text-align: center; padding-top: 40px;">
-                            <div style="width: 50px; height: 50px; background: var(--ios-green); border-radius: 50%; margin-bottom: 16px; display: flex; align-items: center; justify-content: center;">
-                                <span style="color: #fff; font-size: 24px;">✓</span>
-                            </div>
-                            <h3 style="font-size: 16px; font-weight: 700; margin-bottom: 4px; color: #323232;">Link Saved!</h3>
-                            <p style="color: #888; font-size: 11px; margin-bottom: 2px;">Sony WH-1000XM5</p>
-                            <p style="color: #888; font-size: 10px; margin-bottom: 16px;">amazon.com</p>
-
-                            <div style="padding: 10px 20px; background: rgba(0,0,0,0.03); border: 1px solid rgba(0,0,0,0.08); border-radius: 4px; margin-bottom: 24px;">
-                                <div style="font-size: 9px; color: #888; text-transform: uppercase; letter-spacing: 0.5px;">Benefactor</div>
-                                <div style="font-size: 14px; font-weight: 700; color: var(--ios-green);">MKBHD</div>
-                            </div>
-
-                            <button style="width: 100%; padding: 12px; background: #323232; color: #fff; border: none; border-radius: 6px; font-size: 12px; font-weight: 600; margin-bottom: 8px;">Open in App</button>
-                            <button style="width: 100%; padding: 12px; background: transparent; color: #323232; border: none; font-size: 12px;">Done</button>
+                            <button class="btn-primary" style="margin-top: 16px;">Open Link</button>
+                            <button class="btn-secondary">Copy Code</button>
                         </div>
                     </div>
                 </div>

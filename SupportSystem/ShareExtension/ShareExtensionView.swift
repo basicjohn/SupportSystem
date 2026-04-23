@@ -303,7 +303,7 @@ struct ShareExtensionView: View {
             // Save button
             Button {
                 selectedBenefactor = benefactor
-                saveLink()
+                Task { await saveLink() }
             } label: {
                 Text(isSaving ? "Saving..." : "Save & Support This Benefactor")
                     .font(AppTypography.buttonLabel)
@@ -338,7 +338,7 @@ struct ShareExtensionView: View {
             )
 
             Button {
-                saveLink()
+                Task { await saveLink() }
             } label: {
                 Text(isSaving ? "Saving..." : "Save Link")
                     .font(AppTypography.buttonLabel)
@@ -450,7 +450,7 @@ struct ShareExtensionView: View {
                 if showAddBenefactor && !newCreatorName.isEmpty && !newCode.isEmpty {
                     createAndSelectBenefactor()
                 }
-                saveLink()
+                Task { await saveLink() }
             } label: {
                 Text(isSaving ? "Saving..." : "Save Link")
                     .font(AppTypography.buttonLabel)
@@ -821,7 +821,7 @@ struct ShareExtensionView: View {
 
     // MARK: - Save
 
-    private func saveLink() {
+    private func saveLink() async {
         guard let urlString = sharedURL,
               let domain = extractedDomain,
               let urlHash = URLUtilities.hashURL(urlString),
@@ -851,7 +851,13 @@ struct ShareExtensionView: View {
 
         // Populate scraped metadata
         link.title = scrapedTitle
-        link.subtitle = scrapedSubtitle
+        link.subtitle = await TaglineGenerator.generate(
+            title: scrapedTitle,
+            category: scrapedCategory,
+            price: scrapedPrice,
+            merchantDomain: domain,
+            merchantName: merchantName
+        )
         link.productDescription = scrapedDescription
         link.imageURL = scrapedImageURL
         link.price = scrapedPrice

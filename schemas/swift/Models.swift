@@ -72,16 +72,15 @@ final class SavedLink {
     /// The code found in URL, if any
     var detectedCode: String?
 
-    /// CodeType raw value of detected code
-    var detectedCodeType: String?
-    /// Where the code was found: "queryParam", "pathSegment"
-    var detectedCodeSource: String?
-    /// The URL param or path keyword the code was in
-    var detectedCodeParam: String?
-
     // MARK: Status
     /// Current state: active, archived, or purchased
     var status: LinkStatus
+
+    /// User wants price drop notifications
+    var isPriceAlertEnabled: Bool
+
+    /// Target price for alert
+    var targetPrice: Decimal?
 
     // MARK: Timestamps
     var createdAt: Date
@@ -105,18 +104,9 @@ final class SavedLink {
         self.priceCurrency = "USD"
         self.benefactorDetected = false
         self.status = .active
+        self.isPriceAlertEnabled = false
         self.createdAt = Date()
         self.updatedAt = Date()
-    }
-
-    // MARK: Reminder Trigger
-    /// Whether the benefactor-code reminder modal should appear before
-    /// navigating to this link's store. The rule lives on the model so every
-    /// shopping entry point (detail view, future share extension, widget)
-    /// applies it consistently.
-    var shouldRemindBeforeShopping: Bool {
-        guard let benefactor else { return false }
-        return benefactor.isActive && !benefactor.code.isEmpty
     }
 }
 

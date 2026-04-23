@@ -1,0 +1,230 @@
+// =============================================================================
+// SUPPORT SYSTEM - SERVER DATABASE
+// =============================================================================
+// PostgreSQL schema for server-side data
+// Stores: Merchant directory, creator codes, anonymous analytics
+// NO user data stored - respects user privacy
+// =============================================================================
+
+Project SupportSystemServer {
+  database_type: 'PostgreSQL'
+  Note: '''
+    Server database - NO user data stored
+    - Merchant master directory
+    - Default benefactor codes (SupportSystem affiliate)
+    - Popular creators for autocomplete
+    - Anonymous aggregated analytics only
+  '''
+}
+
+// -----------------------------------------------------------------------------
+// MERCHANTS
+// Master directory of supported stores
+// -----------------------------------------------------------------------------
+Table merchants {
+  id uuid [pk, default: `gen_random_uuid()`]
+  domain varchar(255) [not null, unique, note: 'e.g., "amazon.com"']
+
+  // Display
+  display_name varchar(255) [not null]
+  logo_url text
+  category varchar(100)
+
+  // Domain variants for URL matching
+  alternate_domains text [note: 'JSON array']
+
+  // Affiliate info (for future browser extension)
+  affiliate_network varchar(50)
+  code_pattern text [note: 'JSON: how to apply codes']
+
+  // Commission rates (for Est. Support calculation)
+  commission_rate decimal [note: 'Percentage e.g., 4.0 for 4%']
+  commission_type varchar(20) [default: 'percentage', note: 'percentage | flat | tiered']
+  commission_details text [note: 'JSON: category-specific rates if tiered']
+
+  // Status
+  is_active boolean [default: true]
+  is_verified boolean [default: false]
+
+  // Aggregate stats (anonymous)
+  total_links_saved integer [default: 0]
+  total_purchases integer [default: 0]
+  total_benefactor_purchases integer [default: 0]
+  total_default_purchases integer [default: 0]
+
+  // Timestamps
+  created_at timestamp [not null, default: `now()`]
+  updated_at timestamp [not null, default: `now()`]
+
+  indexes {
+    domain
+    category
+    is_active
+  }
+}
+
+// -----------------------------------------------------------------------------
+// DEFAULT BENEFACTORS
+// SupportSystem fallback affiliate codes
+// -----------------------------------------------------------------------------
+Table default_benefactors {
+  id uuid [pk, default: `gen_random_uuid()`]
+  merchant_id uuid [not null, unique, ref: > merchants.id]
+
+  code varchar(100) [not null]
+  code_type varchar(20) [default: 'affiliate']
+  label varchar(50) [default: 'SupportSystem']
+
+  is_active boolean [default: true]
+  notes text
+
+  created_at timestamp [not null, default: `now()`]
+  updated_at timestamp [not null, default: `now()`]
+
+  indexes {
+    merchant_id
+    is_active
+  }
+}
+
+// -----------------------------------------------------------------------------
+// POPULAR CREATORS
+// Directory for autocomplete/suggestions
+// -----------------------------------------------------------------------------
+Table popular_creators {
+  id uuid [pk, default: `gen_random_uuid()`]
+
+  name varchar(100) [not null]
+  slug varchar(100) [unique]
+  avatar_url text
+  bio text
+
+  platforms text [note: 'JSON: social handles']
+  primary_platform varchar(50)
+
+  is_verified boolean [default: false]
+  verified_at timestamp
+  verification_method varchar(50)
+
+  times_selected integer [default: 0]
+  monthly_active_supporters integer [default: 0]
+
+  is_active boolean [default: true]
+
+  created_at timestamp [not null, default: `now()`]
+  updated_at timestamp [not null, default: `now()`]
+
+  indexes {
+    name
+    slug
+    times_selected
+    is_verified
+  }
+}
+
+// -----------------------------------------------------------------------------
+// CREATOR CODES
+// Known affiliate codes for creators by merchant
+// -----------------------------------------------------------------------------
+Table creator_codes {
+  id uuid [pk, default: `gen_random_uuid()`]
+  creator_id uuid [not null, ref: > popular_creators.id]
+  merchant_id uuid [not null, ref: > merchants.id]
+
+  code varchar(100) [not null]
+  code_type varchar(20) [default: 'affiliate']
+
+  is_verified boolean [default: false]
+  last_verified_at timestamp
+  verification_method varchar(50)
+
+  source varchar(100)
+  source_url text
+
+  use_count integer [default: 0]
+  success_count integer [default: 0]
+  report_count integer [default: 0]
+  success_rate decimal
+
+  is_active boolean [default: true]
+  expires_at timestamp
+  deactivated_reason text
+
+  created_at timestamp [not null, default: `now()`]
+  updated_at timestamp [not null, default: `now()`]
+
+  indexes {
+    creator_id
+    merchant_id
+    (creator_id, merchant_id) [unique]
+    is_active
+    success_rate
+  }
+}
+
+// -----------------------------------------------------------------------------
+// MERCHANT ANALYTICS
+// Aggregated anonymous stats per merchant
+// NO individual user data - just counts
+// -----------------------------------------------------------------------------
+Table merchant_analytics {
+  id uuid [pk, default: `gen_random_uuid()`]
+  merchant_id uuid [not null, ref: > merchants.id]
+
+  period_type varchar(20) [not null, note: 'daily | weekly | monthly | all_time']
+  period_start date [not null]
+  period_end date [not null]
+
+  links_saved integer [default: 0]
+  links_viewed integer [default: 0]
+  links_archived integer [default: 0]
+  links_purchased integer [default: 0]
+
+  purchases_with_benefactor integer [default: 0]
+  purchases_with_default integer [default: 0]
+  purchases_no_code integer [default: 0]
+
+  unique_users_approx integer [default: 0, note: 'HyperLogLog estimate']
+  new_users_approx integer [default: 0]
+
+  created_at timestamp [not null, default: `now()`]
+  updated_at timestamp [not null, default: `now()`]
+
+  indexes {
+    merchant_id
+    period_type
+    period_start
+    (merchant_id, period_type, period_start) [unique]
+  }
+}
+
+// -----------------------------------------------------------------------------
+// ANALYTICS EVENTS
+// Anonymous event tracking - NO PII
+// Device hash cannot be reversed to identify users
+// -----------------------------------------------------------------------------
+Table analytics_events {
+  id uuid [pk, default: `gen_random_uuid()`]
+
+  event_type varchar(50) [not null]
+  event_data text [note: 'JSON - no PII']
+
+  device_hash varchar(64) [note: 'SHA256 - irreversible']
+  session_id uuid
+
+  merchant_id uuid [ref: > merchants.id]
+  creator_id uuid [ref: > popular_creators.id]
+
+  app_version varchar(20)
+  platform varchar(20)
+  os_version varchar(20)
+
+  created_at timestamp [not null, default: `now()`]
+
+  indexes {
+    event_type
+    created_at
+    merchant_id
+    (event_type, created_at)
+  }
+}
